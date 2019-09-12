@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TextNode} from '../../classes/text-node';
+import {ConsoleNode} from '../../classes/console-node';
+import {SandboxNode} from '../../classes/sandbox-node';
 
 @Component({
   selector: 'app-main',
@@ -22,11 +24,13 @@ export class MainComponent implements OnInit {
     this.node = new TextNode('first');
     this.node.params.value = 'hello';
 
-    this.node.outNodes.push(new TextNode('second'));
+    let sandboxNode = new SandboxNode('sandbox');
+    this.node.outNodes.push(sandboxNode);
+
+    sandboxNode.outNodes.push(new ConsoleNode('console'));
   }
 
   ngOnInit() {
-    this.node.run();
     // this.ctx = this.canvas.nativeElement.getContext('2d');
 
     // this.draw();
@@ -38,5 +42,9 @@ export class MainComponent implements OnInit {
     ctx.fillRect(0, 0, this.width, this.height);
 
     requestAnimationFrame(() => this.draw());
+  }
+
+  public run() {
+    this.node.run();
   }
 }
