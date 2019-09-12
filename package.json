@@ -1,0 +1,16 @@
+{
+  "name": "anychart",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Serabass <serabass565@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "lerna run start --stream --parallel",
+    "build": "lerna run build --stream --parallel"
+  },
+  "dependencies": {
+    "@angular/cli": "^8.3.4",
+    "lerna": "^3.16.4"
+  }
+}
