@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TextNode} from '../../classes/text-node';
 import {ConsoleNode} from '../../classes/console-node';
 import {SandboxNode} from '../../classes/sandbox-node';
+import {NodeBase} from '../../classes/node-base';
 
 @Component({
   selector: 'app-main',
@@ -18,33 +19,52 @@ export class MainComponent implements OnInit {
 
   public ctx: CanvasRenderingContext2D;
 
-  public node: TextNode;
+  public nodes: NodeBase<any, any, any>[] = [];
+
+  public firstNode: NodeBase<any, any, any>;
 
   constructor() {
-    this.node = new TextNode('first');
-    this.node.params.value = 'hello';
-
-    let sandboxNode = new SandboxNode('sandbox');
-    this.node.outNodes.push(sandboxNode);
-
-    sandboxNode.outNodes.push(new ConsoleNode('console'));
   }
 
   ngOnInit() {
-    // this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    // this.draw();
+    let node = new TextNode('first', this.ctx);
+    this.firstNode = node;
+
+    node.drawObject.x = 20;
+    node.drawObject.y = 50;
+
+    node.params.value = 'hello';
+
+    let sandboxNode = new SandboxNode('sandbox', this.ctx);
+    node.addOut(sandboxNode);
+
+    sandboxNode.drawObject.x = 250;
+    sandboxNode.drawObject.y = 70;
+
+    let consoleNode = new ConsoleNode('console', this.ctx);
+    sandboxNode.addOut(consoleNode);
+
+    consoleNode.drawObject.x = 500;
+    consoleNode.drawObject.y = 120;
+
+    this.nodes.push(node, sandboxNode, consoleNode);
+    this.draw();
   }
 
   public draw() {
-    let ctx = this.ctx;
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillRect(0, 0, this.width, this.height);
+
+    for (let node of this.nodes) {
+      node.drawObject.draw();
+    }
 
     requestAnimationFrame(() => this.draw());
   }
 
   public run() {
-    this.node.run();
+    this.firstNode.run();
   }
 }
