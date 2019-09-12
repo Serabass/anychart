@@ -1,4 +1,4 @@
-import {DrawObject} from './draw-object';
+import {Drawable} from './drawable';
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public input: TInput;
@@ -6,16 +6,19 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public inNodes: NodeBase<any, any, any>[] = [];
   public outNodes: NodeBase<any, any, any>[] = [];
 
+  public disableIn = false;
+  public disableOut = false;
+
   public params: {[key: string]: any} = {};
 
-  public drawObject: DrawObject;
+  public drawObject: Drawable;
 
   public color: string;
 
   public abstract process(): any;
 
   public constructor(public name: string, public ctx: CanvasRenderingContext2D) {
-    this.drawObject = new DrawObject(this.ctx, this);
+    this.drawObject = new Drawable(this.ctx, this);
   }
 
   public async run() {

@@ -44,12 +44,17 @@ export class MainComponent implements OnInit {
     sandboxNode.drawObject.y = 70;
 
     let consoleNode = new ConsoleNode('console', this.ctx);
+    let consoleNode2 = new ConsoleNode('console2', this.ctx);
     sandboxNode.addOut(consoleNode);
+    sandboxNode.addOut(consoleNode2);
 
     consoleNode.drawObject.x = 500;
     consoleNode.drawObject.y = 120;
 
-    this.nodes.push(node, sandboxNode, consoleNode);
+    consoleNode2.drawObject.x = 500;
+    consoleNode2.drawObject.y = 320;
+
+    this.nodes.push(node, sandboxNode, consoleNode, consoleNode2);
     this.draw();
   }
 
