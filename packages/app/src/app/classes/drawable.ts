@@ -47,6 +47,7 @@ export class Drawable {
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + 20 * (i + 1));
         ctx.lineTo(node.drawObject.right, node.drawObject.y + 20 * (i + 1));
+        // ctx.bezierCurveTo(1, 1, 1, 1, node.drawObject.right, node.drawObject.y + 20 * (i + 1));
         ctx.stroke();
         ctx.closePath();
       });
@@ -82,12 +83,12 @@ export class Drawable {
         ctx.font = '12px serif';
         ctx.textAlign = 'right';
         ctx.fillStyle = 'black';
-        ctx.fillText(key, this.width / 2 - 5, this.bottom + i * 15);
+        ctx.fillText(key, this.left + this.width / 2 - 5, this.bottom + i * 15);
 
         ctx.font = '12px serif';
         ctx.textAlign = 'left';
         ctx.fillStyle = 'black';
-        ctx.fillText(JSON.stringify(value), this.width / 2 + 5, this.bottom + i * 15);
+        ctx.fillText(JSON.stringify(value), this.left + this.width / 2 + 5, this.bottom + i * 15);
       });
     }
   }

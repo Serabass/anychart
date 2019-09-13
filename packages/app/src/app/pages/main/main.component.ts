@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
     this.firstNode = node;
 
     node.drawObject.x = 20;
-    node.drawObject.y = 50;
+    node.drawObject.y = 220;
 
     node.params.value = 'hello';
     node.params.value2 = 'hello2';
@@ -46,19 +46,19 @@ export class MainComponent implements OnInit {
     let sandboxNode = new SandboxNode('sandbox', this.ctx);
     node.addOut(sandboxNode);
 
-    sandboxNode.drawObject.x = 250;
-    sandboxNode.drawObject.y = 70;
+    sandboxNode.drawObject.x = 500;
+    sandboxNode.drawObject.y = 300;
 
     let consoleNode = new ConsoleNode('console', this.ctx);
     let consoleNode2 = new ConsoleNode('console2', this.ctx);
     sandboxNode.addOut(consoleNode);
     sandboxNode.addOut(consoleNode2);
 
-    consoleNode.drawObject.x = 500;
+    consoleNode.drawObject.x = 1000;
     consoleNode.drawObject.y = 120;
 
-    consoleNode2.drawObject.x = 500;
-    consoleNode2.drawObject.y = 320;
+    consoleNode2.drawObject.x = 1000;
+    consoleNode2.drawObject.y = 420;
     this.wp.nodes.push(node, sandboxNode, consoleNode, consoleNode2);
     this.wp.init();
   }
