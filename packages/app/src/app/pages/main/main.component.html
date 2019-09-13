@@ -2,4 +2,8 @@
   Run
 </button>
 <hr>
-<canvas [width]="width" [height]="height" #canvas></canvas>
+<canvas [width]="width"
+        [height]="height"
+        #canvas
+        (mousemove)="mousemove($event)"
+        (mousedown)="mousedown($event)"></canvas>

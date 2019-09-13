@@ -17,7 +17,11 @@ export class Drawable {
     let ctx = this.ctx;
 
     ctx.fillStyle = this.node.color;
-    ctx.strokeStyle = 'white';
+    if (!this.node.hovered) {
+      ctx.strokeStyle = 'white';
+    } else {
+      ctx.strokeStyle = 'blue';
+    }
     ctx.lineWidth = this.lineWidth;
 
     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -50,7 +54,22 @@ export class Drawable {
         ctx.strokeRect(this.x + this.width - 5, this.y + 20 * (i + 1), 10, 10);
       });
     }
+  }
 
+  public get left() {
+    return this.x;
+  }
+
+  public get top() {
+    return this.y;
+  }
+
+  public get right() {
+    return this.x + this.width;
+  }
+
+  public get bottom() {
+    return this.y + this.height;
   }
 }
 

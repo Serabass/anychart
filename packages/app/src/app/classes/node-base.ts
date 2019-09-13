@@ -12,6 +12,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public params: {[key: string]: any} = {};
 
   public drawObject: Drawable;
+  public hovered = false;
 
   public color: string;
 
@@ -33,5 +34,14 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public addOut(node: NodeBase) {
     this.outNodes.push(node);
     node.inNodes.push(this);
+  }
+
+  public hasPointIn(x: number, y: number) {
+    if (x > this.drawObject.left && x < this.drawObject.right) {
+      if (y > this.drawObject.top && y < this.drawObject.bottom) {
+        return true;
+      }
+    }
+    return false;
   }
 }

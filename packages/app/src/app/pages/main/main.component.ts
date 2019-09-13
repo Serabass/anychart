@@ -72,4 +72,16 @@ export class MainComponent implements OnInit {
   public run() {
     this.firstNode.run();
   }
+
+  public mousemove(e: MouseEvent) {
+    let x = e.offsetX;
+    let y = e.offsetY;
+    for (let node of this.nodes) {
+      node.hovered = node.hasPointIn(x, y);
+    }
+  }
+
+  public mousedown(e: MouseEvent) {
+
+  }
 }
