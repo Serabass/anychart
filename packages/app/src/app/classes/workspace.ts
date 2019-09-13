@@ -11,6 +11,8 @@ export class Workspace {
   private fps: any;
   public fpsDisplay: any;
 
+  public hoveredNode: NodeBase<any, any, any>;
+
   public gridInfo: GridInfo = {
     snap: true,
     x: 10,
@@ -32,11 +34,7 @@ export class Workspace {
     setInterval(() => this.fpsDisplay = this.fps, 1000);
   }
 
-  public draw() {
-    this.ctx.fillStyle = 'grey';
-    this.ctx.strokeStyle = 'transparent';
-    this.ctx.fillRect(0, 0, this.width, this.height);
-
+  private drawGrid() {
     if (this.gridInfo.snap) {
       let xx = 0;
       let yy = 0;
@@ -60,6 +58,14 @@ export class Workspace {
         yy += this.gridInfo.y;
       }
     }
+  }
+
+  public draw() {
+    this.ctx.fillStyle = 'grey';
+    this.ctx.strokeStyle = 'transparent';
+    this.ctx.fillRect(0, 0, this.width, this.height);
+
+    this.drawGrid();
 
     for (let node of this.nodes) {
       node.drawObject.draw();
@@ -77,9 +83,13 @@ export class Workspace {
     _.debounce(() => {
       let x = e.offsetX;
       let y = e.offsetY;
-      for (let node of this.nodes) {
+
+      for (let i = this.nodes.length - 1; i >= 0; i--) {
+        let node = this.nodes[i];
         let {dragInfo} = node;
-        node.hovered = node.hasPointIn(x, y);
+        if (node.hasPointIn(x, y)) {
+          this.hoveredNode = node;
+        }
 
         if (dragInfo.dragging) {
           node.drawObject.x = dragInfo.dragStartX - dragInfo.dragStartMouseX + x;

@@ -1,4 +1,5 @@
 import {Drawable} from './drawable';
+import {Workspace} from './workspace';
 
 export interface DragInfo {
   dragging?: boolean;
@@ -20,7 +21,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public params: { [key: string]: any } = {};
 
   public drawObject: Drawable;
-  public hovered = false;
+
   public dragInfo: DragInfo = {dragging: false};
 
   public color: string;
@@ -28,8 +29,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public abstract process(): any;
 
   public constructor(public name: string,
-                     public ctx: CanvasRenderingContext2D) {
-    this.drawObject = new Drawable(this.ctx, this);
+                     public workspace: Workspace) {
+    this.drawObject = new Drawable(this.workspace.ctx, this);
   }
 
   public async run() {
@@ -62,5 +63,9 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public get paramsCount() {
     return Object.keys(this.params).length;
+  }
+
+  public get hovered() {
+    return this.workspace.hoveredNode === this;
   }
 }

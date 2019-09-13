@@ -18,11 +18,13 @@ export class Drawable {
     let ctx = this.ctx;
 
     ctx.fillStyle = this.node.color;
+
     if (!this.node.hovered) {
       ctx.strokeStyle = 'white';
     } else {
       ctx.strokeStyle = 'blue';
     }
+
     ctx.lineWidth = this.lineWidth;
 
     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -81,14 +83,14 @@ export class Drawable {
       Object.entries(this.node.params).forEach(([key, value]) => {
         i++;
         ctx.font = '12px serif';
-        ctx.textAlign = 'right';
+        ctx.textAlign = 'center';
         ctx.fillStyle = 'black';
         ctx.fillText(key, this.left + this.width / 2 - 5, this.bottom + i * 15);
 
-        ctx.font = '12px serif';
-        ctx.textAlign = 'left';
-        ctx.fillStyle = 'black';
-        ctx.fillText(JSON.stringify(value), this.left + this.width / 2 + 5, this.bottom + i * 15);
+        // ctx.font = '12px serif';
+        // ctx.textAlign = 'left';
+        // ctx.fillStyle = 'black';
+        // ctx.fillText(JSON.stringify(value), this.left + this.width / 2 + 5, this.bottom + i * 15);
       });
     }
   }

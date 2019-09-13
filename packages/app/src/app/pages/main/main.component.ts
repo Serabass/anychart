@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {TextNode} from '../../classes/text-node';
 import {ConsoleNode} from '../../classes/console-node';
 import {SandboxNode} from '../../classes/sandbox-node';
 import {NodeBase} from '../../classes/node-base';
@@ -35,7 +34,7 @@ export class MainComponent implements OnInit {
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.wp = new Workspace(this.ctx);
 
-    let node = new FetchNode('first', this.ctx);
+    let node = new FetchNode('first', this.wp);
     this.firstNode = node;
 
     node.drawObject.x = 20;
@@ -43,14 +42,14 @@ export class MainComponent implements OnInit {
 
     node.params.url = 'https://swapi.co/api/people/1';
 
-    let sandboxNode = new SandboxNode('sandbox', this.ctx);
+    let sandboxNode = new SandboxNode('sandbox', this.wp);
     node.addOut(sandboxNode);
 
     sandboxNode.drawObject.x = 500;
     sandboxNode.drawObject.y = 300;
 
-    let consoleNode = new ConsoleNode('console', this.ctx);
-    let consoleNode2 = new ConsoleNode('console2', this.ctx);
+    let consoleNode = new ConsoleNode('console', this.wp);
+    let consoleNode2 = new ConsoleNode('console2', this.wp);
     sandboxNode.addOut(consoleNode);
     sandboxNode.addOut(consoleNode2);
 
