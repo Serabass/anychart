@@ -33,6 +33,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public constructor(public name: string,
                      public workspace: Workspace) {
     this.drawObject = new Drawable(this.workspace.ctx, this);
+    this.workspace.nodes.push(this);
   }
 
   public async run() {

@@ -69,7 +69,7 @@ export class Workspace {
     }
   }
 
-  public draw(time: number) {
+  public draw(time: number = 0) {
     let {ctx} = this;
     ctx.fillStyle = 'grey';
     ctx.strokeStyle = 'transparent';

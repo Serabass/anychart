@@ -1,4 +1,4 @@
-import {DragInfo, NodeBase} from './node-base';
+import {NodeBase} from './node-base';
 import * as chroma from 'chroma-js';
 
 export class Drawable {
@@ -9,8 +9,6 @@ export class Drawable {
   public height = 70;
 
   public lineWidth = 1;
-
-  private hoverFillColor: string;
 
   public constructor(public ctx: CanvasRenderingContext2D,
                      public node: NodeBase) {
@@ -26,21 +24,21 @@ export class Drawable {
       ctx.fillStyle = node.color;
     }
 
-    if (node.processing) {
-      ctx.fillStyle = chroma(ctx.fillStyle).alpha(Math.sin(time / 30)).hex();
-    }
-
     // ctx.strokeStyle = 'white';
     ctx.lineWidth = this.lineWidth;
 
     let offset = 0;
+
+    if (node.processing) {
+      offset = Math.sin(time / 30);
+    }
 
     if (node.dragInfo.dragging) {
       offset = 2.5;
     }
 
     ctx.fillRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
-    ctx.strokeRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
+    // ctx.strokeRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
 
     ctx.font = '24px serif';
     ctx.fillStyle = 'black';

@@ -4,6 +4,7 @@ import {SandboxNode} from '../../classes/sandbox-node';
 import {NodeBase} from '../../classes/node-base';
 import {Workspace} from '../../classes/workspace';
 import {FetchNode} from '../../classes/fetch-node';
+import {TimeoutNode} from '../../classes/timeout-node';
 
 export interface GridInfo {
   snap: boolean;
@@ -43,24 +44,28 @@ export class MainComponent implements OnInit {
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     node.addOut(sandboxNode);
 
-    sandboxNode.drawObject.x = 500;
+    sandboxNode.drawObject.x = 300;
     sandboxNode.drawObject.y = 300;
 
+    let timeoutNode = new TimeoutNode('timeout1', this.wp);
+
     let consoleNode = new ConsoleNode('console', this.wp);
-    let consoleNode2 = new ConsoleNode('console2', this.wp);
-    sandboxNode.addOut(consoleNode);
-    sandboxNode.addOut(consoleNode2);
+
+    timeoutNode.params.interval = 3000;
+
+    sandboxNode.addOut(timeoutNode);
+    timeoutNode.addOut(consoleNode);
 
     consoleNode.drawObject.x = 1000;
     consoleNode.drawObject.y = 120;
 
-    consoleNode2.drawObject.x = 1000;
-    consoleNode2.drawObject.y = 420;
-    this.wp.nodes.push(node, sandboxNode, consoleNode, consoleNode2);
+    timeoutNode.drawObject.x = 700;
+    timeoutNode.drawObject.y = 420;
     this.wp.init();
   }
 
   public run() {
     this.firstNode.run();
   }
+
 }
