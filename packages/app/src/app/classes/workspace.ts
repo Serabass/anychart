@@ -8,7 +8,7 @@ export class Workspace {
 
   public nodes: NodeBase<any, any, any>[] = [];
   public times: any = [];
-  private fps: any;
+  public fps: any;
   public fpsDisplay: any;
 
   public hoveredNode: NodeBase<any, any, any>;
@@ -84,6 +84,7 @@ export class Workspace {
       let x = e.offsetX;
       let y = e.offsetY;
 
+      this.hoveredNode = null;
       for (let i = this.nodes.length - 1; i >= 0; i--) {
         let node = this.nodes[i];
         let {dragInfo} = node;
