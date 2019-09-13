@@ -69,7 +69,7 @@ export class Workspace {
     }
   }
 
-  public draw() {
+  public draw(time: number) {
     let {ctx} = this;
     ctx.fillStyle = 'grey';
     ctx.strokeStyle = 'transparent';
@@ -78,11 +78,11 @@ export class Workspace {
     this.drawGrid();
 
     for (let node of this.nodes) {
-      node.drawObject.draw();
+      node.drawObject.draw(time);
     }
 
     this.calculateFPS();
-    requestAnimationFrame(() => this.draw());
+    requestAnimationFrame((t: number) => this.draw(t));
   }
 
   public constructor(public ctx: CanvasRenderingContext2D) {

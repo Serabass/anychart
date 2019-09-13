@@ -26,6 +26,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public color: string;
 
+  public processing = false;
+
   public abstract process(): any;
 
   public constructor(public name: string,
@@ -34,7 +36,9 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   }
 
   public async run() {
+    this.processing = true;
     let result = await Promise.resolve(this.process());
+    this.processing = false;
 
     for (let node of this.outNodes) {
       node.input = result;

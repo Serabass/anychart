@@ -17,13 +17,17 @@ export class Drawable {
 
   }
 
-  public draw() {
+  public draw(time: number) {
     let {ctx, node} = this;
 
     if (node.hovered) {
       ctx.fillStyle = chroma(node.color).brighten().hex();
     } else {
       ctx.fillStyle = node.color;
+    }
+
+    if (node.processing) {
+      ctx.fillStyle = chroma(ctx.fillStyle).alpha(Math.sin(time / 30)).hex();
     }
 
     // ctx.strokeStyle = 'white';
@@ -46,7 +50,7 @@ export class Drawable {
       node.inNodes.forEach((inNode, i) => {
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
 
         let x = this.x - 5;
         let y = this.y + 20 * (i + 1);
@@ -69,7 +73,7 @@ export class Drawable {
       node.outNodes.forEach((outNode, i) => {
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
 
         let x = this.right - 5;
         let y = this.y + 20 * (i + 1);
