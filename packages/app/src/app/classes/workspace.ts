@@ -76,7 +76,13 @@ export class Workspace {
   }
 
   public constructor(public ctx: CanvasRenderingContext2D) {
+    let {canvas} = this.ctx;
 
+    canvas.width = this.width;
+    canvas.height = this.height;
+    canvas.addEventListener('mousemove', (e) => this.mousemove(e));
+    canvas.addEventListener('mousedown', (e) => this.mousedown(e));
+    canvas.addEventListener('mouseup', (e) => this.mouseup(e));
   }
 
   public mousemove(e: MouseEvent) {

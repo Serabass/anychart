@@ -21,8 +21,6 @@ export class MainComponent implements OnInit {
   @ViewChild('canvas', {static: true})
   public canvas: ElementRef<HTMLCanvasElement>;
 
-  public ctx: CanvasRenderingContext2D;
-
   public firstNode: NodeBase;
 
   public wp: Workspace;
@@ -31,8 +29,8 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.wp = new Workspace(this.ctx);
+    let ctx = this.canvas.nativeElement.getContext('2d');
+    this.wp = new Workspace(ctx);
 
     let node = new FetchNode('first', this.wp);
     this.firstNode = node;
