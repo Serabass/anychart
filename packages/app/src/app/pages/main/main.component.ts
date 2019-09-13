@@ -4,6 +4,7 @@ import {ConsoleNode} from '../../classes/console-node';
 import {SandboxNode} from '../../classes/sandbox-node';
 import {NodeBase} from '../../classes/node-base';
 import {Workspace} from '../../classes/workspace';
+import {FetchNode} from '../../classes/fetch-node';
 
 export interface GridInfo {
   snap: boolean;
@@ -34,14 +35,13 @@ export class MainComponent implements OnInit {
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.wp = new Workspace(this.ctx);
 
-    let node = new TextNode('first', this.ctx);
+    let node = new FetchNode('first', this.ctx);
     this.firstNode = node;
 
     node.drawObject.x = 20;
     node.drawObject.y = 220;
 
-    node.params.value = 'hello';
-    node.params.value2 = 'hello2';
+    node.params.url = 'https://swapi.co/api/people/1';
 
     let sandboxNode = new SandboxNode('sandbox', this.ctx);
     node.addOut(sandboxNode);

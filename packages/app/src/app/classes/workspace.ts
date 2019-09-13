@@ -1,5 +1,6 @@
 import {NodeBase} from './node-base';
 import {GridInfo} from '../pages/main/main.component';
+import * as _ from 'underscore';
 
 export class Workspace {
   public width = 1200;
@@ -73,22 +74,24 @@ export class Workspace {
   }
 
   public mousemove(e: MouseEvent) {
-    let x = e.offsetX;
-    let y = e.offsetY;
-    for (let node of this.nodes) {
-      let {dragInfo} = node;
-      node.hovered = node.hasPointIn(x, y);
+    _.debounce(() => {
+      let x = e.offsetX;
+      let y = e.offsetY;
+      for (let node of this.nodes) {
+        let {dragInfo} = node;
+        node.hovered = node.hasPointIn(x, y);
 
-      if (dragInfo.dragging) {
-        node.drawObject.x = dragInfo.dragStartX - dragInfo.dragStartMouseX + x;
-        node.drawObject.y = dragInfo.dragStartY - dragInfo.dragStartMouseY + y;
+        if (dragInfo.dragging) {
+          node.drawObject.x = dragInfo.dragStartX - dragInfo.dragStartMouseX + x;
+          node.drawObject.y = dragInfo.dragStartY - dragInfo.dragStartMouseY + y;
 
-        if (this.gridInfo.snap) {
-          node.drawObject.x = node.drawObject.x - node.drawObject.x % this.gridInfo.x;
-          node.drawObject.y = node.drawObject.y - node.drawObject.y % this.gridInfo.y;
+          if (this.gridInfo.snap) {
+            node.drawObject.x = node.drawObject.x - node.drawObject.x % this.gridInfo.x;
+            node.drawObject.y = node.drawObject.y - node.drawObject.y % this.gridInfo.y;
+          }
         }
       }
-    }
+    }, 20)();
   }
 
   public mousedown(e: MouseEvent) {
@@ -97,14 +100,16 @@ export class Workspace {
 
     for (let node of this.nodes) {
       let {dragInfo} = node;
-      if (node.hasPointIn(x, y)) {
-        dragInfo.dragging = true;
-        dragInfo.dragStartX = node.drawObject.x;
-        dragInfo.dragStartY = node.drawObject.y;
-        dragInfo.dragStartMouseX = x;
-        dragInfo.dragStartMouseY = y;
-      } else {
-        dragInfo.dragging = false;
+      if (e.button === 0) {
+        if (node.hasPointIn(x, y)) {
+          dragInfo.dragging = true;
+          dragInfo.dragStartX = node.drawObject.x;
+          dragInfo.dragStartY = node.drawObject.y;
+          dragInfo.dragStartMouseX = x;
+          dragInfo.dragStartMouseY = y;
+        } else {
+          dragInfo.dragging = false;
+        }
       }
     }
   }
