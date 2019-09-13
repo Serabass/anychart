@@ -37,8 +37,15 @@ export class Drawable {
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
 
-        ctx.fillRect(this.x - 5, this.y + 20 * (i + 1), 10, 10);
-        ctx.strokeRect(this.x - 5, this.y + 20 * (i + 1), 10, 10);
+        let x = this.x - 5;
+        let y = this.y + 20 * (i + 1);
+
+        ctx.fillRect(x, y, 10, 10);
+        ctx.strokeRect(x, y, 10, 10);
+
+        ctx.moveTo(this.x + this.width, this.y);
+        ctx.lineTo(node.drawObject.x, node.drawObject.y);
+        ctx.stroke();
       });
     }
 
@@ -50,8 +57,11 @@ export class Drawable {
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
 
-        ctx.fillRect(this.x + this.width - 5, this.y + 20 * (i + 1), 10, 10);
-        ctx.strokeRect(this.x + this.width - 5, this.y + 20 * (i + 1), 10, 10);
+        let x = this.x + this.width - 5;
+        let y = this.y + 20 * (i + 1);
+
+        ctx.fillRect(x, y, 10, 10);
+        ctx.strokeRect(x, y, 10, 10);
       });
     }
   }

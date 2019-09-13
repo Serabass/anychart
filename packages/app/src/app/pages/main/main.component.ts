@@ -59,7 +59,8 @@ export class MainComponent implements OnInit {
   }
 
   public draw() {
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = 'grey';
+    this.ctx.strokeStyle = 'transparent';
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     for (let node of this.nodes) {
@@ -77,11 +78,37 @@ export class MainComponent implements OnInit {
     let x = e.offsetX;
     let y = e.offsetY;
     for (let node of this.nodes) {
+      let {dragInfo} = node;
       node.hovered = node.hasPointIn(x, y);
+
+      if (dragInfo.dragging) {
+        node.drawObject.x = dragInfo.dragStartX - dragInfo.dragStartMouseX + x;
+        node.drawObject.y = dragInfo.dragStartY - dragInfo.dragStartMouseY + y;
+      }
     }
   }
 
   public mousedown(e: MouseEvent) {
+    let x = e.offsetX;
+    let y = e.offsetY;
 
+    for (let node of this.nodes) {
+      let {dragInfo} = node;
+      if (node.hasPointIn(x, y)) {
+        dragInfo.dragging = true;
+        dragInfo.dragStartX = node.drawObject.x;
+        dragInfo.dragStartY = node.drawObject.y;
+        dragInfo.dragStartMouseX = x;
+        dragInfo.dragStartMouseY = y;
+      } else {
+        dragInfo.dragging = false;
+      }
+    }
+  }
+
+  public mouseup(e: MouseEvent) {
+    for (let node of this.nodes) {
+      node.dragInfo.dragging = false;
+    }
   }
 }
