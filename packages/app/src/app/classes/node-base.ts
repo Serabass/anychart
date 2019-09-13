@@ -27,7 +27,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public abstract process(): any;
 
-  public constructor(public name: string, public ctx: CanvasRenderingContext2D) {
+  public constructor(public name: string,
+                     public ctx: CanvasRenderingContext2D) {
     this.drawObject = new Drawable(this.ctx, this);
   }
 

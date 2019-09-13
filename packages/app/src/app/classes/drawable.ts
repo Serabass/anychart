@@ -9,7 +9,8 @@ export class Drawable {
 
   public lineWidth = 2;
 
-  public constructor(public ctx: CanvasRenderingContext2D, public node: NodeBase<any, any, any>) {
+  public constructor(public ctx: CanvasRenderingContext2D,
+                     public node: NodeBase<any, any, any>) {
 
   }
 
@@ -43,9 +44,11 @@ export class Drawable {
         ctx.fillRect(x, y, 10, 10);
         ctx.strokeRect(x, y, 10, 10);
 
-        ctx.moveTo(this.x + this.width, this.y);
-        ctx.lineTo(node.drawObject.x, node.drawObject.y);
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + 20 * (i + 1));
+        ctx.lineTo(node.drawObject.right, node.drawObject.y + 20 * (i + 1));
         ctx.stroke();
+        ctx.closePath();
       });
     }
 
@@ -57,7 +60,7 @@ export class Drawable {
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
 
-        let x = this.x + this.width - 5;
+        let x = this.right - 5;
         let y = this.y + 20 * (i + 1);
 
         ctx.fillRect(x, y, 10, 10);

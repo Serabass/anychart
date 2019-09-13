@@ -23,6 +23,10 @@ export class MainComponent implements OnInit {
 
   public firstNode: NodeBase<any, any, any>;
 
+  public times: any = [];
+  private fps: any;
+  public fpsDisplay: any;
+
   constructor() {
   }
 
@@ -56,6 +60,17 @@ export class MainComponent implements OnInit {
 
     this.nodes.push(node, sandboxNode, consoleNode, consoleNode2);
     this.draw();
+
+    setInterval(() => this.fpsDisplay = this.fps, 1000);
+  }
+
+  private calculateFPS() {
+    const now = performance.now();
+    while (this.times.length > 0 && this.times[0] <= now - 1000) {
+      this.times.shift();
+    }
+    this.times.push(now);
+    this.fps = this.times.length;
   }
 
   public draw() {
@@ -67,6 +82,7 @@ export class MainComponent implements OnInit {
       node.drawObject.draw();
     }
 
+    this.calculateFPS();
     requestAnimationFrame(() => this.draw());
   }
 
