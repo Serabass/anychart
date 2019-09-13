@@ -3,12 +3,12 @@
 </button>
 
 <div>
-  {{ fpsDisplay }} FPS
+  {{ wp.fpsDisplay }} FPS
 </div>
 <hr>
-<canvas [width]="width"
-        [height]="height"
+<canvas [width]="wp.width"
+        [height]="wp.height"
         #canvas
-        (mousemove)="mousemove($event)"
-        (mousedown)="mousedown($event)"
-        (mouseup)="mouseup($event)"></canvas>
+        (mousemove)="wp.mousemove($event)"
+        (mousedown)="wp.mousedown($event)"
+        (mouseup)="wp.mouseup($event)"></canvas>
