@@ -67,6 +67,29 @@ export class Drawable {
         ctx.strokeRect(x, y, 10, 10);
       });
     }
+
+    if (this.node.hasParams) {
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+
+      ctx.fillRect(this.x + 10, this.bottom, this.width - 20, this.node.paramsCount * 20);
+      ctx.strokeRect(this.x + 10, this.bottom, this.width - 20, this.node.paramsCount * 20);
+
+      let i = 0;
+      Object.entries(this.node.params).forEach(([key, value]) => {
+        i++;
+        ctx.font = '12px serif';
+        ctx.textAlign = 'right';
+        ctx.fillStyle = 'black';
+        ctx.fillText(key, this.width / 2 - 5, this.bottom + i * 15);
+
+        ctx.font = '12px serif';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = 'black';
+        ctx.fillText(JSON.stringify(value), this.width / 2 + 5, this.bottom + i * 15);
+      });
+    }
   }
 
   public get left() {

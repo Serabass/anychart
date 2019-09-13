@@ -41,6 +41,7 @@ export class MainComponent implements OnInit {
     node.drawObject.y = 50;
 
     node.params.value = 'hello';
+    node.params.value2 = 'hello2';
 
     let sandboxNode = new SandboxNode('sandbox', this.ctx);
     node.addOut(sandboxNode);

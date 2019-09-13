@@ -54,4 +54,13 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
     }
     return false;
   }
+
+
+  public get hasParams() {
+    return this.paramsCount > 0;
+  }
+
+  public get paramsCount() {
+    return Object.keys(this.params).length;
+  }
 }

@@ -7,7 +7,8 @@ export class TextNode extends NodeBase<any, any> {
   public color = '#3d3d3d';
 
   public params: {
-    value: string
+    value: string,
+    value2: string,
   };
 
   process() {
