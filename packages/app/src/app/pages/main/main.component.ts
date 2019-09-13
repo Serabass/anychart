@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
 
   public ctx: CanvasRenderingContext2D;
 
-  public firstNode: NodeBase<any, any, any>;
+  public firstNode: NodeBase;
 
   public wp: Workspace;
 

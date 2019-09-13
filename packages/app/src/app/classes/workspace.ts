@@ -6,12 +6,12 @@ export class Workspace {
   public width = 1200;
   public height = 600;
 
-  public nodes: NodeBase<any, any, any>[] = [];
+  public nodes: NodeBase[] = [];
   public times: any = [];
   public fps: any;
   public fpsDisplay: any;
 
-  public hoveredNode: NodeBase<any, any, any>;
+  public hoveredNode: NodeBase;
 
   public gridInfo: GridInfo = {
     snap: true,

@@ -10,7 +10,7 @@ export class Drawable {
   public lineWidth = 1;
 
   public constructor(public ctx: CanvasRenderingContext2D,
-                     public node: NodeBase<any, any, any>) {
+                     public node: NodeBase) {
 
   }
 

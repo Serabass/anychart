@@ -12,8 +12,8 @@ export interface DragInfo {
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public input: TInput;
 
-  public inNodes: NodeBase<any, any, any>[] = [];
-  public outNodes: NodeBase<any, any, any>[] = [];
+  public inNodes: NodeBase[] = [];
+  public outNodes: NodeBase[] = [];
 
   public disableIn = false;
   public disableOut = false;

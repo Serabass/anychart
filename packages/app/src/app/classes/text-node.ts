@@ -1,6 +1,6 @@
 import {NodeBase} from './node-base';
 
-export class TextNode extends NodeBase<any, any> {
+export class TextNode extends NodeBase {
 
   public disableIn = true;
 
