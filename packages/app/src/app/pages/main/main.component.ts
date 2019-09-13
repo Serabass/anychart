@@ -27,12 +27,6 @@ export class MainComponent implements OnInit {
 
   public wp: Workspace;
 
-  public gridInfo: GridInfo = {
-    snap: true,
-    x: 20,
-    y: 20
-  };
-
   constructor() {
   }
 

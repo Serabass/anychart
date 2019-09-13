@@ -5,6 +5,11 @@
 <div>
   {{ wp.fpsDisplay }} FPS
 </div>
+<label for="snap">
+  <input type="checkbox" [(ngModel)]="wp.gridInfo.snap" id="snap" />
+  Snap to grid
+</label>
+
 <hr>
 <canvas [width]="wp.width"
         [height]="wp.height"
