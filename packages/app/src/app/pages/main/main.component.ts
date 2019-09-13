@@ -63,5 +63,4 @@ export class MainComponent implements OnInit {
   public run() {
     this.firstNode.run();
   }
-
 }
