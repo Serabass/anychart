@@ -27,8 +27,14 @@ export class Drawable {
 
     ctx.lineWidth = this.lineWidth;
 
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
+    let offset = 0;
+
+    if (this.node.dragInfo.dragging) {
+      offset = 5;
+    }
+
+    ctx.fillRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
+    ctx.strokeRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
 
     ctx.font = '24px serif';
     ctx.fillStyle = 'black';
