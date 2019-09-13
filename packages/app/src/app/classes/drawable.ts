@@ -1,4 +1,4 @@
-import {NodeBase} from './node-base';
+import {DragInfo, NodeBase} from './node-base';
 
 export class Drawable {
   public x = 0;
@@ -15,11 +15,11 @@ export class Drawable {
   }
 
   public draw() {
-    let ctx = this.ctx;
+    let {ctx, node} = this;
 
-    ctx.fillStyle = this.node.color;
+    ctx.fillStyle = node.color;
 
-    if (!this.node.hovered) {
+    if (!node.hovered) {
       ctx.strokeStyle = 'white';
     } else {
       ctx.strokeStyle = 'blue';
@@ -29,8 +29,8 @@ export class Drawable {
 
     let offset = 0;
 
-    if (this.node.dragInfo.dragging) {
-      offset = 5;
+    if (node.dragInfo.dragging) {
+      offset = 2.5;
     }
 
     ctx.fillRect(this.x - offset, this.y - offset, this.width + offset * 2, this.height + offset * 2);
@@ -38,10 +38,10 @@ export class Drawable {
 
     ctx.font = '24px serif';
     ctx.fillStyle = 'black';
-    if (!this.node.disableIn) {
-      ctx.fillText(this.node.inNodes.length.toString(), this.x + 10, this.y + 40);
+    if (!node.disableIn) {
+      ctx.fillText(node.inNodes.length.toString(), this.x + 10, this.y + 40);
 
-      this.node.inNodes.forEach((node, i) => {
+      node.inNodes.forEach((inNode, i) => {
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
@@ -54,17 +54,17 @@ export class Drawable {
 
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + 20 * (i + 1));
-        ctx.lineTo(node.drawObject.right, node.drawObject.y + 20 * (i + 1));
-        // ctx.bezierCurveTo(1, 1, 1, 1, node.drawObject.right, node.drawObject.y + 20 * (i + 1));
+        ctx.lineTo(inNode.drawObject.right, inNode.drawObject.y + 20 * (i + 1));
+        // ctx.bezierCurveTo(1, 1, 1, 1, inNode.drawObject.right, inNode.drawObject.y + 20 * (i + 1));
         ctx.stroke();
         ctx.closePath();
       });
     }
 
-    if (!this.node.disableOut) {
-      ctx.fillText(this.node.outNodes.length.toString(), this.x + this.width - 30, this.y + 40);
+    if (!node.disableOut) {
+      ctx.fillText(node.outNodes.length.toString(), this.x + this.width - 30, this.y + 40);
 
-      this.node.outNodes.forEach((node, i) => {
+      node.outNodes.forEach((outNode, i) => {
         ctx.fillStyle = 'red';
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
@@ -77,16 +77,16 @@ export class Drawable {
       });
     }
 
-    if (this.node.hasParams) {
+    if (node.hasParams) {
       ctx.fillStyle = 'white';
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1;
 
-      ctx.fillRect(this.x + 10, this.bottom, this.width - 20, this.node.paramsCount * 20);
-      ctx.strokeRect(this.x + 10, this.bottom, this.width - 20, this.node.paramsCount * 20);
+      ctx.fillRect(this.x + 10, this.bottom, this.width - 20, node.paramsCount * 20);
+      ctx.strokeRect(this.x + 10, this.bottom, this.width - 20, node.paramsCount * 20);
 
       let i = 0;
-      Object.entries(this.node.params).forEach(([key, value]) => {
+      Object.entries(node.params).forEach(([key, value]) => {
         i++;
         ctx.font = '12px serif';
         ctx.textAlign = 'center';

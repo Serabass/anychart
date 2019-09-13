@@ -1,12 +1,12 @@
 import {Drawable} from './drawable';
 import {Workspace} from './workspace';
+import {Point} from './point';
 
 export interface DragInfo {
   dragging?: boolean;
-  dragStartX?: number;
-  dragStartY?: number;
-  dragStartMouseX?: number;
-  dragStartMouseY?: number;
+
+  start: Point;
+  startMouse: Point;
 }
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
@@ -22,7 +22,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public drawObject: Drawable;
 
-  public dragInfo: DragInfo = {dragging: false};
+  public dragInfo: DragInfo = {dragging: false, start: {x: 0, y: 0}, startMouse: {x: 0, y: 0}};
 
   public color: string;
 
@@ -47,6 +47,12 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
     node.inNodes.push(this);
   }
 
+  /**
+   * TODO Rename to containsPoint
+   *
+   * @param x x
+   * @param y y
+   */
   public hasPointIn(x: number, y: number) {
     if (x > this.drawObject.left && x < this.drawObject.right) {
       if (y > this.drawObject.top && y < this.drawObject.bottom) {
