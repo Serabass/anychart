@@ -26,6 +26,9 @@ export class MainComponent implements OnInit {
   @ViewChild('container', {static: true})
   public container: ElementRef<HTMLDivElement>;
 
+  @ViewChild('canvasCol', {static: true})
+  public canvasCol: ElementRef<HTMLDivElement>;
+
   public firstNode: NodeBase;
 
   public wp: Workspace;

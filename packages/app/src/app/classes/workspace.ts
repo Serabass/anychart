@@ -28,23 +28,6 @@ export class Workspace extends Entity {
     y: 10
   };
 
-  private drawCurves() {
-    let context = this.layer.getContext();
-
-    context.clear();
-
-    // draw bezier
-    context.beginPath();
-    context.moveTo(0, 0);
-    context.bezierCurveTo(
-      100, 100,
-      200, 200,
-      300, 300,
-    );
-    context.setAttr('strokeStyle', 'blue');
-    context.setAttr('lineWidth', 4);
-    context.stroke();
-  }
   public init() {
     this.stage = new Konva.Stage({
       container: this.container,
@@ -57,10 +40,6 @@ export class Workspace extends Entity {
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
 
-    // keep curves insync with the lines
-    this.layer.on('beforeDraw', () => {
-      this.drawCurves();
-    });
     let scaleBy = 0.8;
     this.stage.on('wheel', e => {
       e.evt.preventDefault();
