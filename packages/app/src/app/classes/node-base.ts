@@ -148,7 +148,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
     for (let node of this.outNodes) {
       node.input = result;
-      await node.run();
+      node.run();
     }
   }
 

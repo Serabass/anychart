@@ -40,6 +40,7 @@ export class MainComponent implements OnInit {
     node.params.url = 'https://swapi.co/api/people/1';
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
+    let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
     node.addOut(sandboxNode);
 
     sandboxNode.x = 300;
@@ -58,7 +59,8 @@ export class MainComponent implements OnInit {
     sandboxNode.addOut(timeoutNode2);
     timeoutNode.addOut(consoleNode);
     timeoutNode.addOut(consoleNode2);
-    timeoutNode2.addOut(consoleNode2);
+    timeoutNode2.addOut(sandboxNode2);
+    sandboxNode2.addOut(consoleNode2);
 
     consoleNode.x = 1000;
     consoleNode.y = 120;
@@ -69,8 +71,11 @@ export class MainComponent implements OnInit {
     timeoutNode.x = 700;
     timeoutNode.y = 420;
 
-    timeoutNode2.x = 700;
+    timeoutNode2.x = 500;
     timeoutNode2.y = 620;
+
+    sandboxNode2.x = 800;
+    sandboxNode2.y = 620;
 
     this.wp.init();
     node.init();
@@ -80,6 +85,7 @@ export class MainComponent implements OnInit {
     timeoutNode.init();
     timeoutNode.init();
     timeoutNode2.init();
+    sandboxNode2.init();
 
     this.wp.addNodes();
   }
