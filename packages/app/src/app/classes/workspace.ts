@@ -1,12 +1,20 @@
 import {NodeBase} from './node-base';
 import {GridInfo} from '../pages/main/main.component';
 import Konva from 'konva';
-import {NodeEditComponent} from '../components/drawers/node-edit/node-edit.component';
+import {JsonProperty, Serializable} from 'typescript-json-serializer';
+import {Entity} from './entity';
 
-export class Workspace {
+@Serializable()
+export class Workspace extends Entity {
+  @JsonProperty()
   public width = 1500;
+
+  @JsonProperty()
   public height = 800;
 
+  @JsonProperty({
+    type: NodeBase
+  })
   public nodes: NodeBase[] = [];
   public fpsDisplay: any;
 
@@ -27,7 +35,6 @@ export class Workspace {
       draggable: true
     });
     this.layer = new Konva.Layer();
-    let tween = null;
     let dragLayer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
@@ -70,6 +77,6 @@ export class Workspace {
   }
 
   public constructor(public container: HTMLDivElement) {
-
+    super();
   }
 }

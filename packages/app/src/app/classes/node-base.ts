@@ -1,15 +1,19 @@
 import {Workspace} from './workspace';
 import Konva from 'konva';
+import {JsonProperty, Serializable} from 'typescript-json-serializer';
+import {Entity} from './entity';
 
-export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
+export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
 
   public constructor(public name: string,
                      public workspace: Workspace = null) {
+    super();
     if (this.workspace) {
       this.workspace.nodes.push(this);
     }
   }
 
+  @JsonProperty()
   public get shape() {
     if (this._shape) {
       return this._shape;
@@ -65,14 +69,22 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public input: TInput;
 
+  @JsonProperty()
   public inNodes: NodeBase[] = [];
+
+  @JsonProperty()
   public outNodes: NodeBase[] = [];
 
+  @JsonProperty()
   public params: { [key: string]: any } = {};
 
+  @JsonProperty()
   public x: number;
+
+  @JsonProperty()
   public y: number;
 
+  @JsonProperty()
   public color: string;
 
   public processing = false;
