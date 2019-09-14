@@ -7,6 +7,15 @@ export class ConsoleNode extends NodeBase <any, any, any> {
   public disableOut = true;
 
   @JsonProperty()
+  public id: string;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
+
+  @JsonProperty()
   public color = 'green';
 
   process(): any {

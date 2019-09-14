@@ -8,6 +8,15 @@ export class ScriptNode extends NodeBase {
   @JsonProperty()
   public color = chroma('gray').brighten().hex();
 
+  @JsonProperty()
+  public id: string;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
+
   @Param({
     name: 'Script',
     type: 'bigtext'

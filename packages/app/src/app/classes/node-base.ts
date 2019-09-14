@@ -1,28 +1,45 @@
 import {Workspace} from './workspace';
 import Konva from 'konva';
-import {JsonProperty} from 'typescript-json-serializer';
+import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
+import * as uuid from 'uuid/v1';
 
+@Serializable()
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
+
+  private static usedIds: string[] = [];
+
+  @JsonProperty()
+  public id: string;
 
   __params: any;
 
   public errors: any[] = [];
 
-  @JsonProperty()
-  public name: string;
-
-  @JsonProperty()
-  public get constructorName() {
-    return this.constructor.name;
-  }
-
   public constructor(name: string, public workspace: Workspace = null) {
     super();
+    this.constructorName = this.constructor.name;
+    this.generateUniqueId();
     this.name = name;
     if (this.workspace) {
       this.workspace.nodes.push(this);
     }
+  }
+
+  private generateUniqueId() {
+    if (this.id) {
+      return;
+    }
+    do {
+      let id = uuid();
+
+      if (!NodeBase.usedIds.includes(id)) {
+        this.id = id;
+        NodeBase.usedIds.push(id);
+        break;
+      }
+
+    } while (true);
   }
 
   public get shape() {
@@ -81,6 +98,12 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   public lines: Konva.Line[] = [];
 
   public input: TInput;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
 
   @JsonProperty()
   public inNodes: NodeBase[] = [];

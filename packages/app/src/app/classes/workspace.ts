@@ -13,7 +13,9 @@ export class Workspace extends Entity {
   public height = 800;
 
   @JsonProperty({
-    type: NodeBase
+    predicate: (...args) => {
+      debugger;
+    }
   })
   public nodes: NodeBase[] = [];
   public fpsDisplay: any;

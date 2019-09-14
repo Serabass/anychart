@@ -95,10 +95,6 @@ export class MainComponent implements OnInit {
       if (e.target instanceof Konva.Rect) {
         let currentNode = e.target.getAttr('node') as NodeBase;
 
-        if (currentNode.paramsCount === 0) {
-          return;
-        }
-
         const drawerRef = this.drawerService.create<NodeEditComponent, { node: NodeBase }, string>({
           nzTitle: currentNode.name,
           nzWidth: 500,

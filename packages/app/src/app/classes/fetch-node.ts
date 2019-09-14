@@ -1,7 +1,7 @@
 import {NodeBase} from './node-base';
 import 'reflect-metadata';
 import {Param} from '../decorators/param';
-import {Serializable} from 'typescript-json-serializer';
+import {JsonProperty, Serializable} from 'typescript-json-serializer';
 
 export enum HttpMethod {
   GET,
@@ -17,7 +17,17 @@ export class FetchNode extends NodeBase <any, any, any> {
 
   public disableIn = true;
 
+  @JsonProperty()
   public color = 'yellowgreen';
+
+  @JsonProperty()
+  public id: string;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
 
   @Param({
     name: 'URL',

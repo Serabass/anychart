@@ -15,6 +15,15 @@ export class TimeoutNode extends NodeBase <any, any, any> {
   @JsonProperty()
   public interval: number;
 
+  @JsonProperty()
+  public id: string;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
+
   process(): any {
     return new Promise((resolve) => {
       setTimeout(() => resolve(this.input), this.interval);

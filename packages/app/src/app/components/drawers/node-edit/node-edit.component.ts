@@ -23,12 +23,15 @@ export class NodeEditComponent implements OnInit {
       this.node.__params = {};
     }
     let controlsConfig = {
+      color: [null],
     };
-    let val = {};
+    let val: any = {};
     Object.entries(this.node.__params).forEach(([key, value]) => {
       controlsConfig[key] = [null];
       val[key] = this.node[key] || null;
     });
+
+    val.color = this.node.color;
 
     this.validateForm = this.fb.group(controlsConfig);
     this.validateForm.setValue(val);

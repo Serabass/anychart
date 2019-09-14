@@ -7,6 +7,15 @@ export class TextNode extends NodeBase {
   public disableIn = true;
 
   @JsonProperty()
+  public id: string;
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public constructorName: string;
+
+  @JsonProperty()
   public color = 'rgb(216, 93, 226)';
 
   process() {
