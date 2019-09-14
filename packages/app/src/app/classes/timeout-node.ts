@@ -2,7 +2,7 @@ import {NodeBase} from './node-base';
 
 export class TimeoutNode extends NodeBase <any, any, any> {
 
-  public color = 'blue';
+  public color = '#8888ff';
 
   public params: {
     interval: number,

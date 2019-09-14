@@ -36,6 +36,35 @@ export class Workspace {
         debugger;
       }
     });
+
+    let scaleBy = 0.8;
+    this.stage.on('wheel', e => {
+      e.evt.preventDefault();
+      let oldScale = this.stage.scaleX();
+
+      let mousePointTo = {
+        x: this.stage.getPointerPosition().x / oldScale - this.stage.x() / oldScale,
+        y: this.stage.getPointerPosition().y / oldScale - this.stage.y() / oldScale
+      };
+
+      let newScale =
+        e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+      this.stage.scale({ x: newScale, y: newScale });
+
+      let newPos = {
+        x:
+          -(mousePointTo.x - this.stage.getPointerPosition().x / newScale) *
+          newScale,
+        y:
+          -(mousePointTo.y - this.stage.getPointerPosition().y / newScale) *
+          newScale
+      };
+      this.stage.position(newPos);
+      this.stage.batchDraw();
+    });
+    this.nodes.forEach((node) => {
+      node.init();
+    });
   }
 
   public addNodes() {

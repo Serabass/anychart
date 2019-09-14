@@ -1,6 +1,9 @@
-<button (click)="run()">
-  Run
-</button>
+<div class="head-toolbar">
+  <button nz-button (click)="run()">
+    Run
+  </button>
+  <nz-divider nzType="vertical"></nz-divider>
+</div>
 
 <div *ngIf="false">
   {{ wp.fpsDisplay }} FPS
@@ -11,7 +14,14 @@
 </label>
 
 <hr>
-<div class="toolbar">
-  <app-toolbar></app-toolbar>
-</div>
-<div #container class="container"></div>
+<section nz-row>
+  <section nz-col [nzMd]="2">
+    <div class="toolbar">
+      <app-toolbar></app-toolbar>
+    </div>
+  </section>
+  <section nz-col [nzMd]="4">
+    <div #container class="container"></div>
+  </section>
+</section>
+

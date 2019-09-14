@@ -4,7 +4,7 @@ export class TextNode extends NodeBase {
 
   public disableIn = true;
 
-  public color = '#3d3d3d';
+  public color = 'rgb(216, 93, 226)';
 
   public params: {
     value: string,

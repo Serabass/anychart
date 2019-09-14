@@ -78,15 +78,6 @@ export class MainComponent implements OnInit {
     sandboxNode2.y = 620;
 
     this.wp.init();
-    node.init();
-    consoleNode.init();
-    consoleNode2.init();
-    sandboxNode.init();
-    timeoutNode.init();
-    timeoutNode.init();
-    timeoutNode2.init();
-    sandboxNode2.init();
-
     this.wp.addNodes();
   }
 
