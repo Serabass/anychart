@@ -1,14 +1,6 @@
 import {Drawable} from './drawable';
 import {Workspace} from './workspace';
-import {Point} from './point';
 import Konva from 'konva';
-
-export interface DragInfo {
-  dragging?: boolean;
-
-  start: Point;
-  startMouse: Point;
-}
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
@@ -30,6 +22,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       width: 120,
       height: 60,
       fill: this.color,
+      stroke: 'black',
       startScale: 1,
       shadowColor: 'black',
       shadowBlur: 4,
@@ -38,6 +31,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
       node: this
     });
+
+    this._shape.strokeEnabled(false);
 
     return this._shape;
   }
@@ -97,6 +92,25 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
         this.lines.push(line);
       }
     }
+
+
+    this.workspace.layer.on('mouseover', (evt) => {
+      if (evt.target instanceof Konva.Shape) {
+        let shape = evt.target;
+        document.body.style.cursor = 'pointer';
+        shape.strokeEnabled(true);
+        this.workspace.layer.draw();
+      }
+    });
+
+    this.workspace.layer.on('mouseout', (evt) => {
+      if (evt.target instanceof Konva.Shape) {
+        let shape = evt.target;
+        document.body.style.cursor = 'default';
+        shape.strokeEnabled(false);
+        this.workspace.layer.draw();
+      }
+    });
   }
 
   public abstract process(): any;
@@ -115,21 +129,5 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public addOut(node: NodeBase) {
     this.outNodes.push(node);
     node.inNodes.push(this);
-  }
-
-  /**
-   * @deprecated
-   * TODO Rename to containsPoint
-   *
-   * @param x x
-   * @param y y
-   */
-  public hasPointIn(x: number, y: number) {
-    if (x > this.drawObject.left && x < this.drawObject.right) {
-      if (y > this.drawObject.top && y < this.drawObject.bottom) {
-        return true;
-      }
-    }
-    return false;
   }
 }
