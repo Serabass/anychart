@@ -91,10 +91,10 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
         let updateLine = () => {
           let numbers = [
-            this.shape.x() + this.shape.width(),
+            this.shape.x() + this.shape.find('Rect')[0].width(),
             this.shape.y() + (index + 1) * 10,
             node.shape.x(),
-            node.shape.y() + node.shape.height() / 2
+            node.shape.y() + node.shape.find('Rect')[0].height() / 2
           ];
           line.points(numbers);
           this.workspace.layer.batchDraw();
