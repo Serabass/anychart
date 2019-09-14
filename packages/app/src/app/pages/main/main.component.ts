@@ -8,6 +8,7 @@ import {TimeoutNode} from '../../classes/timeout-node';
 import Konva from 'konva';
 import {NodeEditComponent} from '../../components/drawers/node-edit/node-edit.component';
 import {NzDrawerService} from 'ng-zorro-antd';
+import {ScriptNode} from '../../classes/script-node';
 
 export interface GridInfo {
   snap: boolean;
@@ -44,6 +45,8 @@ export class MainComponent implements OnInit {
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
+    let scriptNode = new ScriptNode('script1', this.wp);
+    scriptNode.script = 'this.input + " sandbox"';
     node.addOut(sandboxNode);
 
     sandboxNode.x = 300;
@@ -60,13 +63,17 @@ export class MainComponent implements OnInit {
 
     sandboxNode.addOut(timeoutNode);
     sandboxNode.addOut(timeoutNode2);
-    timeoutNode.addOut(consoleNode);
+    timeoutNode.addOut(scriptNode);
+    scriptNode.addOut(consoleNode);
     timeoutNode.addOut(consoleNode2);
     timeoutNode2.addOut(sandboxNode2);
     sandboxNode2.addOut(consoleNode2);
 
-    consoleNode.x = 1000;
+    consoleNode.x = 1300;
     consoleNode.y = 120;
+
+    scriptNode.x = 1000;
+    scriptNode.y = 120;
 
     consoleNode2.x = 1000;
     consoleNode2.y = 420;

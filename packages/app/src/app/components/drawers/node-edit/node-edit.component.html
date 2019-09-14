@@ -11,6 +11,12 @@
                      [nzXs]="24"
                      [ngSwitch]="node.__params[key].type">
 
+      <textarea nz-input
+                [formControlName]="key"
+                [id]="key"
+                *ngSwitchCase="'bigtext'"
+      ></textarea>
+
       <input nz-input
              [formControlName]="key"
              [id]="key"

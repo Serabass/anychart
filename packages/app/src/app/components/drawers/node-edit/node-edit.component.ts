@@ -19,14 +19,17 @@ export class NodeEditComponent implements OnInit {
               private drawerRef: NzDrawerRef<any>) { }
 
   ngOnInit() {
+    if (!this.node.__params) {
+      this.node.__params = {};
+    }
     let controlsConfig = {
     };
     let val = {};
     Object.entries(this.node.__params).forEach(([key, value]) => {
       controlsConfig[key] = [null];
-      val[key] = this.node[key];
+      val[key] = this.node[key] || null;
     });
-    debugger;
+
     this.validateForm = this.fb.group(controlsConfig);
     this.validateForm.setValue(val);
   }
