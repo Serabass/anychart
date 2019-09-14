@@ -29,6 +29,8 @@ export class Workspace extends Entity {
   };
 
   public init() {
+    let dragLayer = new Konva.Layer();
+    let scaleBy = 0.8;
     this.stage = new Konva.Stage({
       container: this.container,
       width: this.width,
@@ -36,11 +38,9 @@ export class Workspace extends Entity {
       draggable: true
     });
     this.layer = new Konva.Layer();
-    let dragLayer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
 
-    let scaleBy = 0.8;
     this.stage.on('wheel', e => {
       e.evt.preventDefault();
       let oldScale = this.stage.scaleX();
@@ -66,8 +66,10 @@ export class Workspace extends Entity {
       this.stage.batchDraw();
     });
 
-
     let con = this.stage.container();
+    this.stage.on('dragstart', e => {
+      e.evt.preventDefault(); // !important
+    });
     con.addEventListener('dragover', e => {
       e.preventDefault(); // !important
     });

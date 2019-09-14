@@ -174,12 +174,12 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
           ];
 
           let a1 = [
-            this.shape.x() + this.shape.findOne('Rect').width() + 50,
+            this.shape.x() + this.shape.findOne('Rect').width() + 100,
             this.shape.y() + (index + 1) * 10,
           ];
 
           let a2 = [
-            node.shape.x() - 50,
+            node.shape.x() - 100,
             node.shape.y() + node.shape.findOne('Rect').height() / 2,
           ];
 
@@ -203,8 +203,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     }
 
     this.shape.on('mousemove', (e) => {
-      let x = e.evt.layerX - this.x;
-      let y = e.evt.layerY - this.y;
+      let x = e.evt.layerX - this.shape.x();
+      let y = e.evt.layerY - this.shape.y();
 
       if (x > this.rect.width() - 20) {
         document.body.style.cursor = 'crosshair';
