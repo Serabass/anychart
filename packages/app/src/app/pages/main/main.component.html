@@ -2,10 +2,10 @@
   Run
 </button>
 
-<div>
+<div *ngIf="false">
   {{ wp.fpsDisplay }} FPS
 </div>
-<label for="snap">
+<label for="snap" *ngIf="false">
   <input type="checkbox" [(ngModel)]="wp.gridInfo.snap" id="snap" />
   Snap to grid
 </label>

@@ -31,47 +31,10 @@ export class Workspace {
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
 
-    this.stage.on('dragstart', (e) => {
-      if (e.target instanceof Konva.Stage) {
-        return;
+    this.stage.on('dblclick', (e) => {
+      if (e.target instanceof Konva.Rect) {
+        debugger;
       }
-      return;
-      let shape = e.target.parent;
-      // moving to another layer will improve dragging performance
-      shape.moveTo(dragLayer);
-      this.stage.draw();
-
-      if (tween) {
-        tween.pause();
-      }
-      shape.setAttrs({
-        shadowOffset: {
-          x: 15,
-          y: 15
-        },
-        scale: {
-          x: shape.getAttr('startScale') * 1.2,
-          y: shape.getAttr('startScale') * 1.2
-        }
-      });
-    });
-
-    this.stage.on('dragend', e => {
-      if (e.target instanceof Konva.Stage) {
-        return;
-      }
-      return;
-      let shape = e.target.parent;
-      shape.moveTo(this.layer);
-      this.stage.draw();
-      shape.to({
-        duration: 0.5,
-        easing: Konva.Easings.ElasticEaseOut,
-        scaleX: shape.getAttr('startScale'),
-        scaleY: shape.getAttr('startScale'),
-        shadowOffsetX: 2,
-        shadowOffsetY: 2,
-      });
     });
   }
 

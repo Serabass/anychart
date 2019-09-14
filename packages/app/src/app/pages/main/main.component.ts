@@ -46,15 +46,19 @@ export class MainComponent implements OnInit {
     sandboxNode.y = 300;
 
     let timeoutNode = new TimeoutNode('timeout1', this.wp);
+    let timeoutNode2 = new TimeoutNode('timeout2', this.wp);
 
     let consoleNode = new ConsoleNode('console', this.wp);
     let consoleNode2 = new ConsoleNode('console2', this.wp);
 
     timeoutNode.params.interval = 3000;
+    timeoutNode2.params.interval = 1500;
 
     sandboxNode.addOut(timeoutNode);
+    sandboxNode.addOut(timeoutNode2);
     timeoutNode.addOut(consoleNode);
     timeoutNode.addOut(consoleNode2);
+    timeoutNode2.addOut(consoleNode2);
 
     consoleNode.x = 1000;
     consoleNode.y = 120;
@@ -64,6 +68,10 @@ export class MainComponent implements OnInit {
 
     timeoutNode.x = 700;
     timeoutNode.y = 420;
+
+    timeoutNode2.x = 700;
+    timeoutNode2.y = 620;
+
     this.wp.init();
     node.init();
     consoleNode.init();
@@ -71,6 +79,7 @@ export class MainComponent implements OnInit {
     sandboxNode.init();
     timeoutNode.init();
     timeoutNode.init();
+    timeoutNode2.init();
 
     this.wp.addNodes();
   }
