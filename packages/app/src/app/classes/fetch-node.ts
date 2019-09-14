@@ -12,22 +12,13 @@ export enum HttpMethod {
   PATCH,
 }
 
-@Serializable()
+@Serializable('NodeBase')
 export class FetchNode extends NodeBase <any, any, any> {
 
   public disableIn = true;
 
   @JsonProperty()
   public color = 'yellowgreen';
-
-  @JsonProperty()
-  public id: string;
-
-  @JsonProperty()
-  public name: string;
-
-  @JsonProperty()
-  public constructorName: string;
 
   @Param({
     name: 'URL',

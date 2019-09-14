@@ -2,7 +2,7 @@ import {NodeBase} from './node-base';
 import {Param} from '../decorators/param';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 
-@Serializable()
+@Serializable('NodeBase')
 export class TimeoutNode extends NodeBase <any, any, any> {
 
   @JsonProperty()
@@ -14,15 +14,6 @@ export class TimeoutNode extends NodeBase <any, any, any> {
   })
   @JsonProperty()
   public interval: number;
-
-  @JsonProperty()
-  public id: string;
-
-  @JsonProperty()
-  public name: string;
-
-  @JsonProperty()
-  public constructorName: string;
 
   process(): any {
     return new Promise((resolve) => {

@@ -66,7 +66,7 @@ export class MainComponent implements OnInit {
     sandboxNode.addOut(timeoutNode2);
     timeoutNode.addOut(scriptNode);
     scriptNode.addOut(consoleNode);
-    timeoutNode.addOut(consoleNode2);
+    // timeoutNode.addOut(consoleNode2);
     timeoutNode2.addOut(sandboxNode2);
     sandboxNode2.addOut(consoleNode2);
 

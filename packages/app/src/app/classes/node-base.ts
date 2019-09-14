@@ -7,15 +7,6 @@ import * as uuid from 'uuid/v1';
 @Serializable()
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
 
-  private static usedIds: string[] = [];
-
-  @JsonProperty()
-  public id: string;
-
-  __params: any;
-
-  public errors: any[] = [];
-
   public constructor(name: string, public workspace: Workspace = null) {
     super();
     this.constructorName = this.constructor.name;
@@ -24,22 +15,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     if (this.workspace) {
       this.workspace.nodes.push(this);
     }
-  }
-
-  private generateUniqueId() {
-    if (this.id) {
-      return;
-    }
-    do {
-      let id = uuid();
-
-      if (!NodeBase.usedIds.includes(id)) {
-        this.id = id;
-        NodeBase.usedIds.push(id);
-        break;
-      }
-
-    } while (true);
   }
 
   public get shape() {
@@ -95,6 +70,15 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     return Object.keys(this.__params || {}).length;
   }
 
+  private static usedIds: string[] = [];
+
+  @JsonProperty()
+  public id: string;
+
+  public __params: any;
+
+  public errors: any[] = [];
+
   public lines: Konva.Line[] = [];
 
   public input: TInput;
@@ -105,11 +89,19 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   @JsonProperty()
   public constructorName: string;
 
-  @JsonProperty()
   public inNodes: NodeBase[] = [];
 
-  @JsonProperty()
   public outNodes: NodeBase[] = [];
+
+  @JsonProperty()
+  private get ins(): string[] {
+    return this.inNodes.map(n => n.id);
+  }
+
+  @JsonProperty()
+  private get outs(): string[] {
+    return this.outNodes.map(n => n.id);
+  }
 
   @JsonProperty()
   /**
@@ -129,6 +121,22 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   public processing = false;
 
   private _shape: Konva.Group;
+
+  private generateUniqueId() {
+    if (this.id) {
+      return;
+    }
+    do {
+      let id = uuid();
+
+      if (!NodeBase.usedIds.includes(id)) {
+        this.id = id;
+        NodeBase.usedIds.push(id);
+        break;
+      }
+
+    } while (true);
+  }
 
   public init() {
     if (this.outNodes.length > 0) {
