@@ -35,13 +35,14 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.wp = new Workspace(this.container.nativeElement);
-    let node = new FetchNode('first', this.wp);
+    let node = new FetchNode('http', this.wp);
     this.firstNode = node;
 
     node.x = 20;
     node.y = 220;
 
     node.url = 'https://swapi.co/api/people/1/';
+    node.method = 'GET' as any;
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
@@ -58,7 +59,7 @@ export class MainComponent implements OnInit {
     let consoleNode = new ConsoleNode('console', this.wp);
     let consoleNode2 = new ConsoleNode('console2', this.wp);
 
-    timeoutNode.interval = 3000;
+    timeoutNode.interval = 2000;
     timeoutNode2.interval = 1500;
 
     sandboxNode.addOut(timeoutNode);
@@ -92,7 +93,12 @@ export class MainComponent implements OnInit {
 
     this.wp.stage.on('click', (e) => {
       if (e.target instanceof Konva.Rect) {
-        let currentNode = e.target.getAttr('node');
+        let currentNode = e.target.getAttr('node') as NodeBase;
+
+        if (currentNode.paramsCount === 0) {
+          return;
+        }
+
         const drawerRef = this.drawerService.create<NodeEditComponent, { node: NodeBase }, string>({
           nzTitle: currentNode.name,
           nzWidth: 500,
@@ -120,5 +126,10 @@ export class MainComponent implements OnInit {
 
   public run() {
     this.firstNode.run();
+  }
+
+  public save() {
+    let json = this.wp.serialize();
+    debugger;
   }
 }

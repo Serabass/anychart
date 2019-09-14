@@ -1,14 +1,18 @@
 import {NodeBase} from './node-base';
 import {Param} from '../decorators/param';
+import {JsonProperty, Serializable} from 'typescript-json-serializer';
 
+@Serializable()
 export class TimeoutNode extends NodeBase <any, any, any> {
 
+  @JsonProperty()
   public color = '#8888ff';
 
   @Param({
     name: 'Interval',
     type: 'number'
   })
+  @JsonProperty()
   public interval: number;
 
   process(): any {

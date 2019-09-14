@@ -21,6 +21,8 @@ export class Workspace extends Entity {
   public stage: Konva.Stage;
   public layer: Konva.Layer;
 
+  public throttle = 500;
+
   public gridInfo: GridInfo = {
     snap: true,
     x: 10,

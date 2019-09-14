@@ -1,6 +1,7 @@
 import {NodeBase} from './node-base';
 import 'reflect-metadata';
 import {Param} from '../decorators/param';
+import {Serializable} from 'typescript-json-serializer';
 
 export enum HttpMethod {
   GET,
@@ -11,6 +12,7 @@ export enum HttpMethod {
   PATCH,
 }
 
+@Serializable()
 export class FetchNode extends NodeBase <any, any, any> {
 
   public disableIn = true;
@@ -28,7 +30,7 @@ export class FetchNode extends NodeBase <any, any, any> {
     type: 'enum',
     options: HttpMethod
   })
-  public method: HttpMethod = 'GET' as any;
+  public method: HttpMethod;
 
   process(): any {
     return fetch(this.url, {

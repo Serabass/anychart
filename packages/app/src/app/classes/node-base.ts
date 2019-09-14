@@ -7,9 +7,19 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
 
   __params: any;
 
-  public constructor(public name: string,
-                     public workspace: Workspace = null) {
+  public errors: any[] = [];
+
+  @JsonProperty()
+  public name: string;
+
+  @JsonProperty()
+  public get constructorName() {
+    return this.constructor.name;
+  }
+
+  public constructor(name: string, public workspace: Workspace = null) {
     super();
+    this.name = name;
     if (this.workspace) {
       this.workspace.nodes.push(this);
     }
@@ -42,6 +52,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
       node: this
     });
 
+    rect.strokeEnabled(false);
+
     let text = new Konva.Text({
       text: this.name,
       x: 0,
@@ -63,7 +75,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   }
 
   public get paramsCount() {
-    return Object.keys(this.params || {}).length;
+    return Object.keys(this.__params || {}).length;
   }
 
   public lines: Konva.Line[] = [];
@@ -153,19 +165,30 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
 
   private timeout() {
     return new Promise(resolve => {
-      setTimeout(resolve, 200);
+      setTimeout(resolve, this.workspace.throttle);
     });
   }
 
   public async run() {
+    this.errors = [];
     this.processing = true;
     let rect = this.shape.find<Konva.Rect>('Rect')[0];
-    let savedFill = rect.fill();
-    rect.fill('black');
+    let savedOpacity = rect.opacity();
+    rect.opacity(0.5);
     this.workspace.layer.batchDraw();
-    let result = await Promise.resolve(this.process());
+    let result = null;
+
+    try {
+      result = await Promise.resolve(this.process());
+    } catch (e) {
+      this.errors.push(e);
+      rect.opacity(savedOpacity);
+      this.workspace.layer.batchDraw();
+      return;
+    }
+
     await this.timeout();
-    rect.fill(savedFill);
+    rect.opacity(savedOpacity);
     this.workspace.layer.batchDraw();
 
     this.processing = false;
@@ -174,6 +197,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
       node.input = result;
       node.run();
     }
+    rect.opacity(savedOpacity);
+    this.workspace.layer.batchDraw();
   }
 
   public addOut(node: NodeBase) {

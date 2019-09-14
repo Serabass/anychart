@@ -1,5 +1,20 @@
 
 <form nz-form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6"
+                   [nzXs]="24"
+                   [nzRequired]="true"
+                   nzFor="color">
+      Color
+    </nz-form-label>
+    <nz-form-control [nzSm]="14"
+                     [nzXs]="24">
+      <input nz-input
+             type="text"
+             [(ngModel)]="node.color"
+             formControlName="color" />
+    </nz-form-control>
+  </nz-form-item>
   <nz-form-item *ngFor="let key of keys(node.__params)">
     <nz-form-label [nzSm]="6"
                    [nzXs]="24"

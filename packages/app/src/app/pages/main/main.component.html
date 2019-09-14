@@ -1,15 +1,36 @@
 <div class="head-toolbar">
-  <button nz-button (click)="run()">
-    Run
-  </button>
-  <nz-divider nzType="vertical"></nz-divider>
+  <section>
+    <nz-row>
+      <nz-col [nzMd]="1">
+        <button nz-button (click)="run()">
+          Run
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+      </nz-col>
+      <nz-col [nzMd]="2">
+        <label for="th">
+          Throttle (ms):
+        </label>
+      </nz-col>
+      <nz-col [nzMd]="1">
+        <input nz-input type="number" [(ngModel)]="wp.throttle" id="th"/>
+      </nz-col>
+      <nz-col [nzMd]="1">
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button (click)="save()">
+          Save
+        </button>
+      </nz-col>
+    </nz-row>
+  </section>
+
 </div>
 
 <div *ngIf="false">
   {{ wp.fpsDisplay }} FPS
 </div>
 <label for="snap" *ngIf="false">
-  <input type="checkbox" [(ngModel)]="wp.gridInfo.snap" id="snap" />
+  <input type="checkbox" [(ngModel)]="wp.gridInfo.snap" id="snap"/>
   Snap to grid
 </label>
 
