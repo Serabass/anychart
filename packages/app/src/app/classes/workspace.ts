@@ -3,6 +3,7 @@ import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
 import {NodeBase} from './node-base';
+import {Point} from './point';
 
 declare var ng: any;
 
@@ -28,6 +29,11 @@ export class Workspace extends Entity {
     x: 10,
     y: 10
   };
+
+
+  public drawingLine: Konva.Line = null;
+
+  public connectorCreateNode: NodeBase = null;
 
   public init() {
     let dragLayer = new Konva.Layer();

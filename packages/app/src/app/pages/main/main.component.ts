@@ -50,6 +50,7 @@ export class MainComponent implements OnInit {
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
     let sandboxNode3 = new SandboxNode('sandbox3', this.wp);
+    let sandboxNode4 = new SandboxNode('sandbox4', this.wp);
     let scriptNode = new ScriptNode('script1', this.wp);
     scriptNode.script = 'this.input + " sandbox"';
     node.addOut(sandboxNode);
@@ -95,6 +96,9 @@ export class MainComponent implements OnInit {
 
     sandboxNode2.x = 800;
     sandboxNode2.y = 620;
+
+    sandboxNode4.x = 100;
+    sandboxNode4.y = 120;
 
     this.wp.init();
     this.wp.addNodes();

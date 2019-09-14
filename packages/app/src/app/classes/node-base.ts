@@ -3,6 +3,7 @@ import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
 import * as uuid from 'uuid/v1';
+import {Point} from './point';
 
 @Serializable()
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
@@ -204,7 +205,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
 
     this.shape.on('mousemove', (e) => {
       let x = e.evt.layerX - this.shape.x();
-      let y = e.evt.layerY - this.shape.y();
 
       if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
         document.body.style.cursor = 'crosshair';
@@ -214,6 +214,58 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
         document.body.style.cursor = 'default';
         this.shape.setAttr('draggable', true);
         this.workspace.layer.parent.setAttr('draggable', true);
+      }
+    });
+
+    this.shape.on('mousedown', (e) => {
+      let x = e.evt.layerX - this.shape.x();
+      let y = e.evt.layerY - this.shape.y();
+      if (e.evt.button === 0) {
+        if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
+          this.workspace.connectorCreateNode = this;
+
+          this.workspace.drawingLine = new Konva.Line({
+            // dash: [10, 10, 0, 10],
+            strokeWidth: 3,
+            stroke: 'black',
+            lineCap: 'round',
+            opacity: 0.3,
+            points: [0, 0]
+          });
+
+          this.workspace.layer.add(this.workspace.drawingLine);
+        }
+      }
+    });
+
+    this.workspace.stage.on('mousemove', (e) => {
+      let x = e.evt.layerX;
+      let y = e.evt.layerY;
+      if (this.workspace.connectorCreateNode) {
+        this.workspace.drawingLine.points([
+          this.shape.x() + this.workspace.connectorCreateNode.x,
+          this.shape.y() + this.workspace.connectorCreateNode.y,
+
+          x - 2,
+          y - 2,
+        ]);
+        this.workspace.layer.batchDraw();
+      }
+    });
+
+    this.workspace.stage.on('mouseup', (e) => {
+      this.workspace.connectorCreateNode = null;
+
+      if (this.workspace.drawingLine) {
+        this.workspace.drawingLine.remove();
+        this.workspace.drawingLine = null;
+
+        if (e.target instanceof Konva.Rect) {
+          let node = e.target.getAttr('node');
+          this.addOut(node);
+        }
+
+        this.workspace.stage.batchDraw();
       }
     });
 
