@@ -150,6 +150,13 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
 
   public abstract process(): any;
 
+
+  private timeout() {
+    return new Promise(resolve => {
+      setTimeout(resolve, 200);
+    });
+  }
+
   public async run() {
     this.processing = true;
     let rect = this.shape.find<Konva.Rect>('Rect')[0];
@@ -157,9 +164,10 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     rect.fill('black');
     this.workspace.layer.batchDraw();
     let result = await Promise.resolve(this.process());
+    await this.timeout();
     rect.fill(savedFill);
-
     this.workspace.layer.batchDraw();
+
     this.processing = false;
 
     for (let node of this.outNodes) {
