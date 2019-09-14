@@ -6,7 +6,7 @@ import {JsonProperty, Serializable} from 'typescript-json-serializer';
 @Serializable('NodeBase')
 export class ScriptNode extends NodeBase {
   @JsonProperty()
-  public color = chroma('gray').brighten().hex();
+  public color = '#DE4AAD';
 
   @Param({
     name: 'Script',

@@ -18,7 +18,7 @@ export class FetchNode extends NodeBase <any, any, any> {
   public disableIn = true;
 
   @JsonProperty()
-  public color = 'yellowgreen';
+  public color = '#15992A';
 
   @Param({
     name: 'URL',

@@ -6,7 +6,7 @@ import {JsonProperty, Serializable} from 'typescript-json-serializer';
 export class TimeoutNode extends NodeBase <any, any, any> {
 
   @JsonProperty()
-  public color = '#8888ff';
+  public color = '#00AAAA';
 
   @Param({
     name: 'Interval',

@@ -7,7 +7,7 @@ export class ConsoleNode extends NodeBase <any, any, any> {
   public disableOut = true;
 
   @JsonProperty()
-  public color = 'green';
+  public color = '#006AC1';
 
   process(): any {
     console.log(this.input);

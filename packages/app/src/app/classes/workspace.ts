@@ -111,7 +111,8 @@ export class Workspace extends Entity {
       let pos = this.stage.getPointerPosition();
       node.x = pos.x - xx;
       node.y = pos.y - yy;
-      this.addNodes();
+      this.layer.add(node.shape);
+      this.layer.batchDraw();
     });
 
     this.nodes.forEach((node) => {
