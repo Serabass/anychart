@@ -10,7 +10,7 @@ export class TimeoutNode extends NodeBase <any, any, any> {
 
   process(): any {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(), this.params.interval);
+      setTimeout(() => resolve(this.input), this.params.interval);
     });
   }
 }

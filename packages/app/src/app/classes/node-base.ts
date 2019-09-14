@@ -1,6 +1,7 @@
 import {Drawable} from './drawable';
 import {Workspace} from './workspace';
 import {Point} from './point';
+import Konva from 'konva';
 
 export interface DragInfo {
   dragging?: boolean;
@@ -10,6 +11,47 @@ export interface DragInfo {
 }
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
+
+  public constructor(public name: string,
+                     public workspace: Workspace) {
+    this.drawObject = new Drawable(this);
+    this.workspace.nodes.push(this);
+  }
+
+  public get shape() {
+    if (this._shape) {
+      return this._shape;
+    }
+
+    this._shape = new Konva.Rect({
+      x: this.drawObject.x,
+      y: this.drawObject.y,
+      draggable: true,
+      width: 120,
+      height: 60,
+      fill: this.color,
+      startScale: 1,
+      shadowColor: 'black',
+      shadowBlur: 4,
+      shadowOffsetX: 2,
+      shadowOffsetY: 2,
+
+      node: this
+    });
+
+    return this._shape;
+  }
+
+  public get hasParams() {
+    return this.paramsCount > 0;
+  }
+
+  public get paramsCount() {
+    return Object.keys(this.params).length;
+  }
+
+  public lines: Konva.Line[] = [];
+
   public input: TInput;
 
   public inNodes: NodeBase[] = [];
@@ -22,19 +64,42 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public drawObject: Drawable;
 
-  public dragInfo: DragInfo = {dragging: false, start: {x: 0, y: 0}, startMouse: {x: 0, y: 0}};
-
   public color: string;
 
   public processing = false;
 
-  public abstract process(): any;
+  private _shape: Konva.Shape;
 
-  public constructor(public name: string,
-                     public workspace: Workspace) {
-    this.drawObject = new Drawable(this.workspace.ctx, this);
-    this.workspace.nodes.push(this);
+  public init() {
+    if (this.outNodes.length > 0) {
+      for (let node of this.outNodes) {
+        let line = new Konva.Arrow({
+          stroke: 'black',
+          fill: 'black',
+          points: [],
+        });
+
+        let updateLine = () => {
+          let numbers = [
+            this.shape.x(),
+            this.shape.y(),
+            node.shape.x(),
+            node.shape.y()
+          ];
+          line.points(numbers);
+          this.workspace.layer.batchDraw();
+        };
+
+        this.shape.on('dragmove', updateLine);
+        node.shape.on('dragmove', updateLine);
+        updateLine();
+        this.workspace.layer.add(line);
+        this.lines.push(line);
+      }
+    }
   }
+
+  public abstract process(): any;
 
   public async run() {
     this.processing = true;
@@ -53,6 +118,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   }
 
   /**
+   * @deprecated
    * TODO Rename to containsPoint
    *
    * @param x x
@@ -65,18 +131,5 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       }
     }
     return false;
-  }
-
-
-  public get hasParams() {
-    return this.paramsCount > 0;
-  }
-
-  public get paramsCount() {
-    return Object.keys(this.params).length;
-  }
-
-  public get hovered() {
-    return this.workspace.hoveredNode === this;
   }
 }
