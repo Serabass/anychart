@@ -1,6 +1,7 @@
 import {NodeBase} from './node-base';
 import {GridInfo} from '../pages/main/main.component';
 import Konva from 'konva';
+import {NodeEditComponent} from '../components/drawers/node-edit/node-edit.component';
 
 export class Workspace {
   public width = 1500;
@@ -30,12 +31,6 @@ export class Workspace {
     let dragLayer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
-
-    this.stage.on('dblclick', (e) => {
-      if (e.target instanceof Konva.Rect) {
-        debugger;
-      }
-    });
 
     let scaleBy = 0.8;
     this.stage.on('wheel', e => {

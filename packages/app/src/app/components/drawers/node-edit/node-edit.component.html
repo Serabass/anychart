@@ -1,0 +1,19 @@
+
+<form nz-form [formGroup]="validateForm">
+  <nz-form-item *ngFor="let key of keys(node.params)">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired [nzFor]="key">
+      {{ key }}
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
+      <input nz-input [formControlName]="key" [id]="key" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button (click)="save()">
+    Save
+  </button>
+
+  <button nz-button (click)="close()">
+    Close
+  </button>
+</form>

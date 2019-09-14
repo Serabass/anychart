@@ -5,6 +5,9 @@ import {NodeBase} from '../../classes/node-base';
 import {Workspace} from '../../classes/workspace';
 import {FetchNode} from '../../classes/fetch-node';
 import {TimeoutNode} from '../../classes/timeout-node';
+import Konva from 'konva';
+import {NodeEditComponent} from '../../components/drawers/node-edit/node-edit.component';
+import {NzDrawerService} from 'ng-zorro-antd';
 
 export interface GridInfo {
   snap: boolean;
@@ -26,7 +29,7 @@ export class MainComponent implements OnInit {
 
   public wp: Workspace;
 
-  constructor() {
+  constructor(private drawerService: NzDrawerService) {
   }
 
   ngOnInit() {
@@ -79,6 +82,31 @@ export class MainComponent implements OnInit {
 
     this.wp.init();
     this.wp.addNodes();
+
+    this.wp.stage.on('dblclick', (e) => {
+      if (e.target instanceof Konva.Rect) {
+        let currentNode = e.target.getAttr('node');
+        const drawerRef = this.drawerService.create<NodeEditComponent, { node: NodeBase }, string>({
+          nzTitle: 'Component',
+          nzWidth: 500,
+          nzContent: NodeEditComponent,
+          nzContentParams: {
+            node: currentNode
+          }
+        });
+
+        drawerRef.afterOpen.subscribe(() => {
+          console.log('Drawer(Component) open');
+        });
+
+        drawerRef.afterClose.subscribe(data => {
+          console.log(data);
+          if (typeof data === 'object') {
+            currentNode.params = data;
+          }
+        });
+      }
+    });
   }
 
   public run() {
