@@ -142,29 +142,53 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     if (this.outNodes.length > 0) {
       let index = 0;
       for (let node of this.outNodes) {
-        let line = new Konva.Arrow({
+        let bezierLine = new Konva.Line({
+          // dash: [10, 10, 0, 10],
+          strokeWidth: 3,
           stroke: 'black',
-          fill: 'black',
-          points: [],
+          lineCap: 'round',
+          opacity: 0.3,
+          points: [0, 0]
         });
-
+        bezierLine.bezier(true);
         let updateLine = () => {
-          let numbers = [
-            this.shape.x() + this.shape.find('Rect')[0].width(),
+
+          let p1 = [
+            this.shape.x() + this.shape.findOne('Rect').width(),
             this.shape.y() + (index + 1) * 10,
-            node.shape.x(),
-            node.shape.y() + node.shape.find('Rect')[0].height() / 2
           ];
-          line.points(numbers);
+
+          let p2 = [
+            node.shape.x(),
+            node.shape.y() + node.shape.findOne('Rect').height() / 2,
+          ];
+
+          let a1 = [
+            this.shape.x() + this.shape.findOne('Rect').width() + 50,
+            this.shape.y() + (index + 1) * 10,
+          ];
+
+          let a2 = [
+            node.shape.x() - 50,
+            node.shape.y() + node.shape.findOne('Rect').height() / 2,
+          ];
+
+          let points = [
+            ...p1,
+            ...a1,
+            ...a2,
+            ...p2,
+          ];
+          bezierLine.points(points);
           this.workspace.layer.batchDraw();
         };
 
         this.shape.on('dragmove', updateLine);
         node.shape.on('dragmove', updateLine);
-        updateLine();
-        this.workspace.layer.add(line);
-        this.lines.push(line);
+        this.workspace.layer.add(bezierLine);
+        this.lines.push(bezierLine);
         index++;
+        updateLine();
       }
     }
 

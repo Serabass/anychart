@@ -46,6 +46,7 @@ export class MainComponent implements OnInit {
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
+    let sandboxNode3 = new SandboxNode('sandbox3', this.wp);
     let scriptNode = new ScriptNode('script1', this.wp);
     scriptNode.script = 'this.input + " sandbox"';
     node.addOut(sandboxNode);
@@ -68,6 +69,7 @@ export class MainComponent implements OnInit {
     scriptNode.addOut(consoleNode);
     // timeoutNode.addOut(consoleNode2);
     timeoutNode2.addOut(sandboxNode2);
+    timeoutNode2.addOut(sandboxNode3);
     sandboxNode2.addOut(consoleNode2);
 
     consoleNode.x = 1300;
@@ -76,7 +78,7 @@ export class MainComponent implements OnInit {
     scriptNode.x = 1000;
     scriptNode.y = 120;
 
-    consoleNode2.x = 1000;
+    consoleNode2.x = 1200;
     consoleNode2.y = 420;
 
     timeoutNode.x = 700;
@@ -84,6 +86,9 @@ export class MainComponent implements OnInit {
 
     timeoutNode2.x = 500;
     timeoutNode2.y = 520;
+
+    sandboxNode3.x = 820;
+    sandboxNode3.y = 460;
 
     sandboxNode2.x = 800;
     sandboxNode2.y = 620;
