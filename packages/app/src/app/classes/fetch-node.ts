@@ -28,11 +28,11 @@ export class FetchNode extends NodeBase <any, any, any> {
     type: 'enum',
     options: HttpMethod
   })
-  public method: HttpMethod = 'GET';
+  public method: HttpMethod = 'GET' as any;
 
   process(): any {
     return fetch(this.url, {
-      method: this.method,
+      method: this.method as any,
     })
       .then((res) => res.json())
       .then((r) => r.name);
