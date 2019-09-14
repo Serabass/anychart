@@ -7,6 +7,8 @@ import * as uuid from 'uuid/v1';
 @Serializable()
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
 
+  public _rect: any;
+
   public constructor(name: string, public workspace: Workspace = null) {
     super();
     this.constructorName = this.constructor.name;
@@ -60,6 +62,14 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     this._shape.add(rect);
 
     return this._shape;
+  }
+
+  public get rect() {
+    if (this._rect) {
+      return this._rect;
+    }
+
+    return this._rect = this.shape.findOne('Rect');
   }
 
   public get hasParams() {
@@ -191,6 +201,19 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
         updateLine();
       }
     }
+
+    this.shape.on('mousemove', (e) => {
+      let x = e.evt.layerX - this.x;
+      let y = e.evt.layerY - this.y;
+
+      if (x > this.rect.width() - 20) {
+        document.body.style.cursor = 'crosshair';
+        this.shape.setAttr('draggable', false);
+      } else {
+        document.body.style.cursor = 'default';
+        this.shape.setAttr('draggable', true);
+      }
+    });
 
     this.workspace.layer.on('mouseover', (evt) => {
       if (evt.target instanceof Konva.Shape) {

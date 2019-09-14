@@ -26,7 +26,7 @@ export class NodeEditComponent implements OnInit {
       color: [null],
     };
     let val: any = {};
-    Object.entries(this.node.__params).forEach(([key, value]) => {
+    Object.keys(this.node.__params).forEach((key) => {
       controlsConfig[key] = [null];
       val[key] = this.node[key] || null;
     });
