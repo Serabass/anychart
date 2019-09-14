@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
     node.x = 20;
     node.y = 220;
 
-    node.params.url = 'https://swapi.co/api/people/1';
+    node.params.url = 'https://swapi.co/api/people/1/';
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
@@ -72,10 +72,10 @@ export class MainComponent implements OnInit {
     consoleNode2.y = 420;
 
     timeoutNode.x = 700;
-    timeoutNode.y = 420;
+    timeoutNode.y = 220;
 
     timeoutNode2.x = 500;
-    timeoutNode2.y = 620;
+    timeoutNode2.y = 520;
 
     sandboxNode2.x = 800;
     sandboxNode2.y = 620;
@@ -83,11 +83,11 @@ export class MainComponent implements OnInit {
     this.wp.init();
     this.wp.addNodes();
 
-    this.wp.stage.on('dblclick', (e) => {
+    this.wp.stage.on('click', (e) => {
       if (e.target instanceof Konva.Rect) {
         let currentNode = e.target.getAttr('node');
         const drawerRef = this.drawerService.create<NodeEditComponent, { node: NodeBase }, string>({
-          nzTitle: 'Component',
+          nzTitle: currentNode.name,
           nzWidth: 500,
           nzContent: NodeEditComponent,
           nzContentParams: {

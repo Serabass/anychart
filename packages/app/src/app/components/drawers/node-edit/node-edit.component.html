@@ -2,16 +2,25 @@
 <form nz-form [formGroup]="validateForm">
   <nz-form-item *ngFor="let key of keys(node.params)">
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired [nzFor]="key">
-      {{ key }}
+      {{ node.__params[key].name }}
     </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
-      <input nz-input [formControlName]="key" [id]="key" />
+    <nz-form-control [nzSm]="14"
+                     [nzXs]="24"
+                     [ngSwitch]="node.__params[key].type">
+      <input nz-input [formControlName]="key" [id]="key" *ngSwitchCase="'string'" />
+      <nz-select nz-input [formControlName]="key" [id]="key" *ngSwitchCase="'enum'">
+        <nz-option [nzValue]="option"
+                   *ngFor="let option of enumValues(node.__params[key].options)" [nzLabel]="option">
+        </nz-option>
+      </nz-select>
     </nz-form-control>
   </nz-form-item>
 
-  <button nz-button (click)="save()">
+  <button nz-button (click)="save()" nzType="primary">
     Save
   </button>
+
+  <nz-divider nzType="vertical"></nz-divider>
 
   <button nz-button (click)="close()">
     Close

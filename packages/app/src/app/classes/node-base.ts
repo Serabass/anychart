@@ -1,9 +1,11 @@
 import {Workspace} from './workspace';
 import Konva from 'konva';
-import {JsonProperty, Serializable} from 'typescript-json-serializer';
+import {JsonProperty} from 'typescript-json-serializer';
 import {Entity} from './entity';
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
+
+  __params: any;
 
   public constructor(public name: string,
                      public workspace: Workspace = null) {
@@ -13,7 +15,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     }
   }
 
-  @JsonProperty()
   public get shape() {
     if (this._shape) {
       return this._shape;
