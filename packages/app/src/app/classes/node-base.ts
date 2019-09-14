@@ -1,13 +1,13 @@
-import {Drawable} from './drawable';
 import {Workspace} from './workspace';
 import Konva from 'konva';
 
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public constructor(public name: string,
-                     public workspace: Workspace) {
-    this.drawObject = new Drawable(this);
-    this.workspace.nodes.push(this);
+                     public workspace: Workspace = null) {
+    if (this.workspace) {
+      this.workspace.nodes.push(this);
+    }
   }
 
   public get shape() {
@@ -55,11 +55,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public disableOut = false;
 
   public params: { [key: string]: any } = {};
-
-  /**
-   * @deprecated
-   */
-  public drawObject: Drawable;
 
   public x: number;
   public y: number;
