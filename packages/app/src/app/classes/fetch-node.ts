@@ -1,17 +1,6 @@
 import {NodeBase} from './node-base';
 import 'reflect-metadata';
-
-function Param(opts = {}) {
-  return (target, propertyKey) => {
-    let type = Reflect.getMetadata('design:type', target, propertyKey);
-
-    if (!target.__params ) {
-      target.__params  = {};
-    }
-
-    target.__params[propertyKey] = opts;
-  };
-}
+import {Param} from '../decorators/param';
 
 export enum HttpMethod {
   GET,
@@ -28,13 +17,6 @@ export class FetchNode extends NodeBase <any, any, any> {
 
   public color = 'yellowgreen';
 
-  public params: {
-    url?: string,
-    method?: string,
-  } = {
-    method: 'GET'
-  };
-
   @Param({
     name: 'URL',
     type: 'string'
@@ -46,11 +28,11 @@ export class FetchNode extends NodeBase <any, any, any> {
     type: 'enum',
     options: HttpMethod
   })
-  public method: HttpMethod;
+  public method: HttpMethod = 'GET';
 
   process(): any {
-    return fetch(this.params.url, {
-      method: this.params.method,
+    return fetch(this.url, {
+      method: this.method,
     })
       .then((res) => res.json())
       .then((r) => r.name);

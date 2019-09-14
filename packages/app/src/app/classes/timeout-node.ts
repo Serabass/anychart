@@ -1,16 +1,19 @@
 import {NodeBase} from './node-base';
+import {Param} from '../decorators/param';
 
 export class TimeoutNode extends NodeBase <any, any, any> {
 
   public color = '#8888ff';
 
-  public params: {
-    interval: number,
-  };
+  @Param({
+    name: 'Interval',
+    type: 'number'
+  })
+  public interval: number;
 
   process(): any {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(this.input), this.params.interval);
+      setTimeout(() => resolve(this.input), this.interval);
     });
   }
 }

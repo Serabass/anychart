@@ -1,14 +1,31 @@
 
 <form nz-form [formGroup]="validateForm">
-  <nz-form-item *ngFor="let key of keys(node.params)">
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired [nzFor]="key">
+  <nz-form-item *ngFor="let key of keys(node.__params)">
+    <nz-form-label [nzSm]="6"
+                   [nzXs]="24"
+                   [nzRequired]="node.__params[key].required"
+                   [nzFor]="key">
       {{ node.__params[key].name }}
     </nz-form-label>
     <nz-form-control [nzSm]="14"
                      [nzXs]="24"
                      [ngSwitch]="node.__params[key].type">
-      <input nz-input [formControlName]="key" [id]="key" *ngSwitchCase="'string'" />
-      <nz-select nz-input [formControlName]="key" [id]="key" *ngSwitchCase="'enum'">
+
+      <input nz-input
+             [formControlName]="key"
+             [id]="key"
+             *ngSwitchCase="'string'" />
+
+      <input nz-input
+             type="number"
+             [formControlName]="key"
+             [id]="key"
+             *ngSwitchCase="'number'" />
+
+      <nz-select nz-input
+                 [formControlName]="key"
+                 [id]="key"
+                 *ngSwitchCase="'enum'">
         <nz-option [nzValue]="option"
                    *ngFor="let option of enumValues(node.__params[key].options)" [nzLabel]="option">
         </nz-option>

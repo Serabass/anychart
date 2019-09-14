@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
     node.x = 20;
     node.y = 220;
 
-    node.params.url = 'https://swapi.co/api/people/1/';
+    node.url = 'https://swapi.co/api/people/1/';
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     let sandboxNode2 = new SandboxNode('sandbox2', this.wp);
@@ -55,8 +55,8 @@ export class MainComponent implements OnInit {
     let consoleNode = new ConsoleNode('console', this.wp);
     let consoleNode2 = new ConsoleNode('console2', this.wp);
 
-    timeoutNode.params.interval = 3000;
-    timeoutNode2.params.interval = 1500;
+    timeoutNode.interval = 3000;
+    timeoutNode2.interval = 1500;
 
     sandboxNode.addOut(timeoutNode);
     sandboxNode.addOut(timeoutNode2);
@@ -102,7 +102,9 @@ export class MainComponent implements OnInit {
         drawerRef.afterClose.subscribe(data => {
           console.log(data);
           if (typeof data === 'object') {
-            currentNode.params = data;
+            for (let key of Object.keys(data)) {
+              currentNode[key] = data[key];
+            }
           }
         });
       }

@@ -21,15 +21,14 @@ export class NodeEditComponent implements OnInit {
   ngOnInit() {
     let controlsConfig = {
     };
-
+    let val = {};
     Object.entries(this.node.__params).forEach(([key, value]) => {
       controlsConfig[key] = [null];
+      val[key] = this.node[key];
     });
+    debugger;
     this.validateForm = this.fb.group(controlsConfig);
-    Object.entries(this.node.__params).forEach(([key, value]) => {
-      controlsConfig[key] = [null];
-      this.validateForm.setValue(this.node.params);
-    });
+    this.validateForm.setValue(val);
   }
 
   public keys(v) {

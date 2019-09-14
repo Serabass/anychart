@@ -77,6 +77,9 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   public outNodes: NodeBase[] = [];
 
   @JsonProperty()
+  /**
+   * @deprecated
+   */
   public params: { [key: string]: any } = {};
 
   @JsonProperty()
