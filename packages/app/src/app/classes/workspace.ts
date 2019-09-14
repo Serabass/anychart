@@ -1,8 +1,9 @@
-import {NodeBase} from './node-base';
 import {GridInfo} from '../pages/main/main.component';
 import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
+
+declare var ng: any;
 
 @Serializable()
 export class Workspace extends Entity {
@@ -12,12 +13,8 @@ export class Workspace extends Entity {
   @JsonProperty()
   public height = 800;
 
-  @JsonProperty({
-    predicate: (...args) => {
-      debugger;
-    }
-  })
-  public nodes: NodeBase[] = [];
+  @JsonProperty()
+  public nodes: any[] = [];
   public fpsDisplay: any;
 
   public stage: Konva.Stage;
@@ -89,6 +86,34 @@ export class Workspace extends Entity {
       this.stage.position(newPos);
       this.stage.batchDraw();
     });
+
+
+    let con = this.stage.container();
+    con.addEventListener('dragover', e => {
+      e.preventDefault(); // !important
+    });
+    con.addEventListener('drop', e => {
+      e.preventDefault();
+      // now we need to find pointer position
+      // we can't use stage.getPointerPosition() here, because that event
+      // is not registered by Konva.Stage
+      // we can register it manually:
+      this.stage.setPointersPositions(e);
+
+      let s = (window as any).dragElement;
+      let xx = (window as any).dragX;
+      let yy = (window as any).dragY;
+      let p = ng.probe(s);
+      let c = p.componentInstance;
+      let n = c.node.constructor;
+      let node = new n(c.node.constructorName, this);
+
+      let pos = this.stage.getPointerPosition();
+      node.x = pos.x - xx;
+      node.y = pos.y - yy;
+      this.addNodes();
+    });
+
     this.nodes.forEach((node) => {
       node.init();
     });

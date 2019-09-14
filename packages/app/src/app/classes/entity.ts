@@ -1,7 +1,6 @@
 import {
   deserialize,
   serialize,
-  JsonProperty,
   Serializable
 } from 'typescript-json-serializer';
 

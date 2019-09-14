@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {ConsoleNode} from '../../classes/console-node';
 import {FetchNode} from '../../classes/fetch-node';
 import {SandboxNode} from '../../classes/sandbox-node';
@@ -24,11 +24,17 @@ export class ToolbarComponent implements OnInit {
 
   public nodes = [];
 
-  constructor() { }
+  constructor(public element: ElementRef<HTMLElement>) { }
 
   ngOnInit() {
     for (let tool of this.tools) {
       this.nodes.push(new tool(tool.name));
     }
+
+    this.element.nativeElement.addEventListener('dragstart', (e) => {
+      (window as any).dragElement = e.target;
+      (window as any).dragX = e.offsetX;
+      (window as any).dragY = e.offsetY;
+    });
   }
 }
