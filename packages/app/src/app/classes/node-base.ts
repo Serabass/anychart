@@ -15,10 +15,16 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       return this._shape;
     }
 
-    this._shape = new Konva.Rect({
+    this._shape = new Konva.Group({
       x: this.x,
       y: this.y,
       draggable: true,
+      startScale: 1,
+    });
+
+    let rect = new Konva.Rect({
+      x: 0,
+      y: 0,
       width: 120,
       height: 60,
       fill: this.color,
@@ -31,7 +37,18 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       node: this
     });
 
-    this._shape.strokeEnabled(false);
+    let text = new Konva.Text({
+      text: this.name,
+      x: 0,
+      y: rect.height() + 10,
+      fontSize: 20,
+      align: 'center',
+      width: rect.width(),
+      fontFamily: 'Calibri',
+      fill: 'red',
+    });
+    this._shape.add(text);
+    this._shape.add(rect);
 
     return this._shape;
   }
@@ -51,9 +68,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   public inNodes: NodeBase[] = [];
   public outNodes: NodeBase[] = [];
 
-  public disableIn = false;
-  public disableOut = false;
-
   public params: { [key: string]: any } = {};
 
   public x: number;
@@ -63,7 +77,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public processing = false;
 
-  private _shape: Konva.Shape;
+  private _shape: Konva.Group;
 
   public init() {
     if (this.outNodes.length > 0) {
@@ -95,7 +109,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       }
     }
 
-
     this.workspace.layer.on('mouseover', (evt) => {
       if (evt.target instanceof Konva.Shape) {
         if (!(evt.target instanceof Konva.Line)) {
@@ -123,7 +136,14 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public async run() {
     this.processing = true;
+    let rect = this.shape.find<Konva.Rect>('Rect')[0];
+    let savedFill = rect.fill();
+    rect.fill('black');
+    this.workspace.layer.batchDraw();
     let result = await Promise.resolve(this.process());
+    rect.fill(savedFill);
+
+    this.workspace.layer.batchDraw();
     this.processing = false;
 
     for (let node of this.outNodes) {

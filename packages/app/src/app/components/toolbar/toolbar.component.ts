@@ -4,6 +4,7 @@ import {FetchNode} from '../../classes/fetch-node';
 import {SandboxNode} from '../../classes/sandbox-node';
 import {TextNode} from '../../classes/text-node';
 import {TimeoutNode} from '../../classes/timeout-node';
+import {ScriptNode} from '../../classes/script-node';
 
 @Component({
   selector: 'app-toolbar',
@@ -18,6 +19,7 @@ export class ToolbarComponent implements OnInit {
     SandboxNode,
     TextNode,
     TimeoutNode,
+    ScriptNode,
   ];
 
   public nodes = [];
@@ -29,5 +31,4 @@ export class ToolbarComponent implements OnInit {
       this.nodes.push(new tool(tool.name));
     }
   }
-
 }

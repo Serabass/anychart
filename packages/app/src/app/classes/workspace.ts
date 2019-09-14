@@ -3,12 +3,10 @@ import {GridInfo} from '../pages/main/main.component';
 import Konva from 'konva';
 
 export class Workspace {
-  public width = 1200;
-  public height = 600;
+  public width = 1500;
+  public height = 800;
 
   public nodes: NodeBase[] = [];
-  public times: any = [];
-  public fps: any;
   public fpsDisplay: any;
 
   public stage: Konva.Stage;
@@ -37,7 +35,8 @@ export class Workspace {
       if (e.target instanceof Konva.Stage) {
         return;
       }
-      let shape = e.target;
+      return;
+      let shape = e.target.parent;
       // moving to another layer will improve dragging performance
       shape.moveTo(dragLayer);
       this.stage.draw();
@@ -61,7 +60,8 @@ export class Workspace {
       if (e.target instanceof Konva.Stage) {
         return;
       }
-      let shape = e.target;
+      return;
+      let shape = e.target.parent;
       shape.moveTo(this.layer);
       this.stage.draw();
       shape.to({
