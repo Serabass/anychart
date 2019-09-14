@@ -2,6 +2,7 @@ import {GridInfo} from '../pages/main/main.component';
 import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
+import {NodeBase} from './node-base';
 
 declare var ng: any;
 
@@ -37,6 +38,7 @@ export class Workspace extends Entity {
       height: this.height,
       draggable: true
     });
+
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.add(dragLayer);
@@ -87,11 +89,11 @@ export class Workspace extends Entity {
       let p = ng.probe(s);
       let c = p.componentInstance;
       let n = c.node.constructor;
-      let node = new n(c.node.constructorName, this);
+      let node: NodeBase = new n(c.node.constructorName, this);
 
       let pos = this.stage.getPointerPosition();
-      node.x = pos.x - xx;
-      node.y = pos.y - yy;
+      node.x = pos.x - this.stage.x() - xx;
+      node.y = pos.y - this.stage.y() - yy;
       this.layer.add(node.shape);
       this.layer.batchDraw();
     });

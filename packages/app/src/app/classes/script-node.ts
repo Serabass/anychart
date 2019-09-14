@@ -1,5 +1,4 @@
 import {NodeBase} from './node-base';
-import * as chroma from 'chroma-js';
 import {Param} from '../decorators/param';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 

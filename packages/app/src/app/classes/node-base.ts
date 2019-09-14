@@ -206,12 +206,14 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
       let x = e.evt.layerX - this.shape.x();
       let y = e.evt.layerY - this.shape.y();
 
-      if (x > this.rect.width() - 20) {
+      if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
         document.body.style.cursor = 'crosshair';
         this.shape.setAttr('draggable', false);
+        this.workspace.layer.parent.setAttr('draggable', false);
       } else {
         document.body.style.cursor = 'default';
         this.shape.setAttr('draggable', true);
+        this.workspace.layer.parent.setAttr('draggable', true);
       }
     });
 
