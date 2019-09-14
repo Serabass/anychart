@@ -75,11 +75,11 @@ export class Workspace {
     });
   }
 
-  public addNodes(layer) {
+  public addNodes() {
     for (let node of this.nodes) {
-      layer.add(node.shape);
+      this.layer.add(node.shape);
     }
-    layer.batchDraw();
+    this.layer.batchDraw();
   }
 
   public constructor(public container: HTMLDivElement) {

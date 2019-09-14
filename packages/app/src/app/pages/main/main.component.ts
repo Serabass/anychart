@@ -34,16 +34,16 @@ export class MainComponent implements OnInit {
     let node = new FetchNode('first', this.wp);
     this.firstNode = node;
 
-    node.drawObject.x = 20;
-    node.drawObject.y = 220;
+    node.x = 20;
+    node.y = 220;
 
     node.params.url = 'https://swapi.co/api/people/1';
 
     let sandboxNode = new SandboxNode('sandbox', this.wp);
     node.addOut(sandboxNode);
 
-    sandboxNode.drawObject.x = 300;
-    sandboxNode.drawObject.y = 300;
+    sandboxNode.x = 300;
+    sandboxNode.y = 300;
 
     let timeoutNode = new TimeoutNode('timeout1', this.wp);
 
@@ -56,14 +56,14 @@ export class MainComponent implements OnInit {
     timeoutNode.addOut(consoleNode);
     timeoutNode.addOut(consoleNode2);
 
-    consoleNode.drawObject.x = 1000;
-    consoleNode.drawObject.y = 120;
+    consoleNode.x = 1000;
+    consoleNode.y = 120;
 
-    consoleNode2.drawObject.x = 1000;
-    consoleNode2.drawObject.y = 420;
+    consoleNode2.x = 1000;
+    consoleNode2.y = 420;
 
-    timeoutNode.drawObject.x = 700;
-    timeoutNode.drawObject.y = 420;
+    timeoutNode.x = 700;
+    timeoutNode.y = 420;
     this.wp.init();
     node.init();
     consoleNode.init();
@@ -72,7 +72,7 @@ export class MainComponent implements OnInit {
     timeoutNode.init();
     timeoutNode.init();
 
-    this.wp.addNodes(this.wp.layer);
+    this.wp.addNodes();
   }
 
   public run() {

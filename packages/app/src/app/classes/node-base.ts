@@ -16,8 +16,8 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
     }
 
     this._shape = new Konva.Rect({
-      x: this.drawObject.x,
-      y: this.drawObject.y,
+      x: this.x,
+      y: this.y,
       draggable: true,
       width: 120,
       height: 60,
@@ -28,7 +28,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
       shadowBlur: 4,
       shadowOffsetX: 2,
       shadowOffsetY: 2,
-
       node: this
     });
 
@@ -42,7 +41,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
   }
 
   public get paramsCount() {
-    return Object.keys(this.params).length;
+    return Object.keys(this.params || {}).length;
   }
 
   public lines: Konva.Line[] = [];
@@ -57,7 +56,13 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public params: { [key: string]: any } = {};
 
+  /**
+   * @deprecated
+   */
   public drawObject: Drawable;
+
+  public x: number;
+  public y: number;
 
   public color: string;
 
@@ -67,6 +72,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
   public init() {
     if (this.outNodes.length > 0) {
+      let index = 0;
       for (let node of this.outNodes) {
         let line = new Konva.Arrow({
           stroke: 'black',
@@ -76,10 +82,10 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
 
         let updateLine = () => {
           let numbers = [
-            this.shape.x(),
-            this.shape.y(),
+            this.shape.x() + this.shape.width(),
+            this.shape.y() + (index + 1) * 10,
             node.shape.x(),
-            node.shape.y()
+            node.shape.y() + node.shape.height() / 2
           ];
           line.points(numbers);
           this.workspace.layer.batchDraw();
@@ -90,25 +96,30 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> {
         updateLine();
         this.workspace.layer.add(line);
         this.lines.push(line);
+        index++;
       }
     }
 
 
     this.workspace.layer.on('mouseover', (evt) => {
       if (evt.target instanceof Konva.Shape) {
-        let shape = evt.target;
-        document.body.style.cursor = 'pointer';
-        shape.strokeEnabled(true);
-        this.workspace.layer.draw();
+        if (!(evt.target instanceof Konva.Line)) {
+          let shape = evt.target;
+          document.body.style.cursor = 'pointer';
+          shape.strokeEnabled(true);
+          this.workspace.layer.draw();
+        }
       }
     });
 
     this.workspace.layer.on('mouseout', (evt) => {
       if (evt.target instanceof Konva.Shape) {
-        let shape = evt.target;
-        document.body.style.cursor = 'default';
-        shape.strokeEnabled(false);
-        this.workspace.layer.draw();
+        if (!(evt.target instanceof Konva.Line)) {
+          let shape = evt.target;
+          document.body.style.cursor = 'default';
+          shape.strokeEnabled(false);
+          this.workspace.layer.draw();
+        }
       }
     });
   }
