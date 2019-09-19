@@ -3,12 +3,11 @@ import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
 import * as uuid from 'uuid/v1';
-import {Point} from './point';
+import {Rect} from 'konva/types/shapes/Rect';
+import {KonvaEventObject} from 'konva/types/Node';
 
 @Serializable()
 export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> extends Entity {
-
-  public _rect: any;
 
   public constructor(name: string, public workspace: Workspace = null) {
     super();
@@ -81,7 +80,35 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     return Object.keys(this.__params || {}).length;
   }
 
+  @JsonProperty()
+  private get ins(): string[] {
+    return this.inNodes.map(n => n.id);
+  }
+
+  @JsonProperty()
+  private get outs(): string[] {
+    return this.outNodes.map(n => n.id);
+  }
+
+  public get left() {
+    return this.shape.x();
+  }
+
+  public get right() {
+    return this.left + this.rect.width();
+  }
+
+  public get top() {
+    return this.shape.y();
+  }
+
+  public get bottom() {
+    return this.top + this.rect.height();
+  }
+
   private static usedIds: string[] = [];
+
+  public _rect: Rect;
 
   @JsonProperty()
   public id: string;
@@ -103,16 +130,6 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
   public inNodes: NodeBase[] = [];
 
   public outNodes: NodeBase[] = [];
-
-  @JsonProperty()
-  private get ins(): string[] {
-    return this.inNodes.map(n => n.id);
-  }
-
-  @JsonProperty()
-  private get outs(): string[] {
-    return this.outNodes.map(n => n.id);
-  }
 
   @JsonProperty()
   /**
@@ -155,7 +172,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
       for (let node of this.outNodes) {
         let bezierLine = new Konva.Line({
           // dash: [10, 10, 0, 10],
-          strokeWidth: 3,
+          strokeWidth: 2,
           stroke: 'black',
           lineCap: 'round',
           opacity: 0.3,
@@ -165,23 +182,23 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
         let updateLine = () => {
 
           let p1 = [
-            this.shape.x() + this.shape.findOne('Rect').width(),
-            this.shape.y() + (index + 1) * 10,
+            this.right,
+            this.shape.y() + node.rect.height() / 2,
           ];
 
           let p2 = [
             node.shape.x(),
-            node.shape.y() + node.shape.findOne('Rect').height() / 2,
+            node.shape.y() + node.rect.height() / 2,
           ];
 
           let a1 = [
-            this.shape.x() + this.shape.findOne('Rect').width() + 100,
-            this.shape.y() + (index + 1) * 10,
+            this.right + 100,
+            this.shape.y(),
           ];
 
           let a2 = [
             node.shape.x() - 100,
-            node.shape.y() + node.shape.findOne('Rect').height() / 2,
+            node.shape.y() + node.rect.height() / 2,
           ];
 
           let points = [
@@ -204,7 +221,7 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     }
 
     this.shape.on('mousemove', (e) => {
-      let x = e.evt.layerX - this.shape.x();
+      let x = e.evt.layerX - this.left;
 
       if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
         document.body.style.cursor = 'crosshair';
@@ -217,26 +234,35 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
       }
     });
 
-    this.shape.on('mousedown', (e) => {
-      let x = e.evt.layerX - this.shape.x();
-      let y = e.evt.layerY - this.shape.y();
-      if (e.evt.button === 0) {
-        if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
-          this.workspace.connectorCreateNode = this;
+    let md = (e: KonvaEventObject<MouseEvent>) => {
+      e.evt.preventDefault();
+      this.workspace.removeNode(this);
+    };
 
-          this.workspace.drawingLine = new Konva.Line({
-            // dash: [10, 10, 0, 10],
-            strokeWidth: 3,
-            stroke: 'black',
-            lineCap: 'round',
-            opacity: 0.3,
-            points: [0, 0]
-          });
+    this.shape
+      .on('mousedown', (e) => {
+        let x = e.evt.layerX - this.shape.x();
+        // let y = e.evt.layerY - this.shape.y();
+        if (e.evt.button === 0) {
+          if (x > (this.workspace.layer.parent.x() + this.rect.width()) - 20) {
+            this.workspace.connectorCreateNode = this;
 
-          this.workspace.layer.add(this.workspace.drawingLine);
+            this.workspace.drawingLine = new Konva.Line({
+              // dash: [10, 10, 0, 10],
+              strokeWidth: 3,
+              stroke: 'black',
+              lineCap: 'round',
+              opacity: 0.3,
+              points: [0, 0]
+            });
+
+            this.workspace.layer.add(this.workspace.drawingLine);
+          }
+        } else if (e.evt.button === 2) {
+          md(e);
         }
-      }
-    });
+      })
+      .on('contextmenu', (e) => md(e));
 
     this.workspace.stage.on('mousemove', (e) => {
       let x = e.evt.layerX;
@@ -337,4 +363,5 @@ export abstract class NodeBase<TInput = any, TOutput = any, TParams = any> exten
     this.outNodes.push(node);
     node.inNodes.push(this);
   }
+
 }

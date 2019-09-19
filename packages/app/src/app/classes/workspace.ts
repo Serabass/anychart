@@ -3,7 +3,6 @@ import Konva from 'konva';
 import {JsonProperty, Serializable} from 'typescript-json-serializer';
 import {Entity} from './entity';
 import {NodeBase} from './node-base';
-import {Point} from './point';
 
 declare var ng: any;
 
@@ -114,6 +113,19 @@ export class Workspace extends Entity {
       this.layer.add(node.shape);
     }
     this.layer.batchDraw();
+  }
+
+  public removeNode(node: NodeBase) {
+    return;
+    for (let inNode of node.inNodes) {
+      inNode.outNodes = inNode.outNodes.filter(n => n !== node);
+    }
+
+    for (let outNode of node.outNodes) {
+      outNode.inNodes = outNode.inNodes.filter(n => n !== node);
+    }
+    this.nodes = this.nodes.filter(n => n !== node);
+    node.shape.remove();
   }
 
   public constructor(public container: HTMLDivElement) {
