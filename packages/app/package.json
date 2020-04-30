@@ -21,7 +21,7 @@
     "@angular/router": "~8.2.5",
     "chroma-js": "^2.0.6",
     "faker": "^4.1.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "konva": "^4.0.10",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
