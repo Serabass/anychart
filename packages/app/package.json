@@ -24,7 +24,7 @@
     "jquery": "^3.4.1",
     "konva": "^4.0.10",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng-zorro-antd": "8.1.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.4.0",
